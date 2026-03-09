@@ -1,21 +1,22 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'fcm_v3_data';
+  const STORAGE_KEY = 'fcm_v4_data';
   const GROUPS = ['A', 'B', 'C', 'D'];
-  const DEFAULT_TEAM_NAMES = {
-    A: ['Brazil', 'Germany', 'France', 'Argentina'],
-    B: ['Spain', 'Portugal', 'England', 'Italy'],
-    C: ['Netherlands', 'Belgium', 'Croatia', 'Denmark'],
-    D: ['Uruguay', 'Mexico', 'Senegal', 'Japan'],
+  // Placeholder labels used as match keys before user fills in names
+  const PLACEHOLDER_NAMES = {
+    A: ['Đội A1', 'Đội A2', 'Đội A3', 'Đội A4'],
+    B: ['Đội B1', 'Đội B2', 'Đội B3', 'Đội B4'],
+    C: ['Đội C1', 'Đội C2', 'Đội C3', 'Đội C4'],
+    D: ['Đội D1', 'Đội D2', 'Đội D3', 'Đội D4'],
   };
 
   // ===== DATA MANAGEMENT =====
   function createDefaultData() {
     const data = { teamNames: {}, matches: {} };
     GROUPS.forEach(g => {
-      data.teamNames[g] = [...DEFAULT_TEAM_NAMES[g]];
-      data.matches[g] = generateMatches(DEFAULT_TEAM_NAMES[g]);
+      data.teamNames[g] = ['', '', '', ''];
+      data.matches[g] = generateMatches(PLACEHOLDER_NAMES[g]);
     });
     return data;
   }
@@ -137,10 +138,12 @@
     const grid = document.getElementById('home-groups-grid');
     if (!grid) return;
     grid.innerHTML = GROUPS.map(g => {
-      const teams = appData.teamNames[g] || DEFAULT_TEAM_NAMES[g];
-      const teamItems = teams.map(t =>
-        `<div class="group-team-item"><span class="team-dot"></span>${escHtml(t)}</div>`
-      ).join('');
+      const teams = appData.teamNames[g] || ['', '', '', ''];
+      const teamItems = teams.map((t, i) => {
+        const label = t && t.trim() ? t : PLACEHOLDER_NAMES[g][i];
+        const isEmpty = !t || !t.trim();
+        return `<div class="group-team-item ${isEmpty ? 'team-empty' : ''}"><span class="team-dot"></span>${escHtml(label)}</div>`;
+      }).join('');
       return `
         <article class="group-card" data-group="${g}">
           <div class="group-card-header">
@@ -170,10 +173,10 @@
   // ===== SETUP PAGE =====
   function renderSetup() {
     GROUPS.forEach(g => {
-      const teams = appData.teamNames[g] || DEFAULT_TEAM_NAMES[g];
+      const teams = appData.teamNames[g] || ['', '', '', ''];
       teams.forEach((name, idx) => {
         const inp = document.querySelector(`.team-name-input[data-group="${g}"][data-idx="${idx}"]`);
-        if (inp) inp.value = name;
+        if (inp) inp.value = name || '';
       });
     });
   }
@@ -184,7 +187,7 @@
       for (let idx = 0; idx < 4; idx++) {
         const inp = document.querySelector(`.team-name-input[data-group="${g}"][data-idx="${idx}"]`);
         const val = inp ? inp.value.trim() : '';
-        newNames.push(val || DEFAULT_TEAM_NAMES[g][idx]);
+        newNames.push(val || PLACEHOLDER_NAMES[g][idx]);
       }
       // Rebuild matches preserving scores by position
       const oldMatches = appData.matches[g] || [];
@@ -223,7 +226,7 @@
         const g = inp.dataset.group;
         const idx = parseInt(inp.dataset.idx);
         if (appData.teamNames[g]) {
-          appData.teamNames[g][idx] = inp.value.trim() || DEFAULT_TEAM_NAMES[g][idx];
+          appData.teamNames[g][idx] = inp.value.trim();
         }
         saveData(); // debounced
       });
@@ -232,11 +235,11 @@
 
   function resetSetup() {
     GROUPS.forEach(g => {
-      appData.teamNames[g] = [...DEFAULT_TEAM_NAMES[g]];
-      appData.matches[g] = generateMatches(DEFAULT_TEAM_NAMES[g]);
+      appData.teamNames[g] = ['', '', '', ''];
+      appData.matches[g] = generateMatches(PLACEHOLDER_NAMES[g]);
       for (let idx = 0; idx < 4; idx++) {
         const inp = document.querySelector(`.team-name-input[data-group="${g}"][data-idx="${idx}"]`);
-        if (inp) inp.value = DEFAULT_TEAM_NAMES[g][idx];
+        if (inp) inp.value = '';
       }
     });
     saveData(true);
