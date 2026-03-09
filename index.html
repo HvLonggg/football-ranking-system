@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚽ Football Championship Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ░░ ANIMATED BG LAYER ░░ -->
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-pitch"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+  <div class="bg-glow g3"></div>
+  <div class="particles" id="particles"></div>
+</div>
+
+<!-- ░░ HEADER ░░ -->
+<header class="header">
+  <div class="container hd-inner">
+    <a class="brand" href="#" onclick="return false;" data-page="home">
+      <span class="brand-cup">🏆</span>
+      <span class="brand-text">
+        <strong>FOOTBALL</strong>
+        <em>Championship Manager</em>
+      </span>
+    </a>
+    <nav class="nav" role="navigation">
+      <button class="nav-btn active" data-page="home">
+        <span class="nb-ico">🏠</span><span class="nb-lbl">Trang chủ</span>
+      </button>
+      <button class="nav-btn" data-page="setup">
+        <span class="nb-ico">⚙️</span><span class="nb-lbl">Thiết lập</span>
+      </button>
+      <button class="nav-btn" data-page="results">
+        <span class="nb-ico">📋</span><span class="nb-lbl">Kết quả</span>
+      </button>
+      <button class="nav-btn" data-page="standings">
+        <span class="nb-ico">📊</span><span class="nb-lbl">Xếp hạng</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+
+<!-- ════════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════════ -->
+<section id="page-home" class="page active">
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="pulse-dot"></span> FIFA WORLD CUP HOANG LONG
+        </div>
+        <h1 class="hero-h1">
+          QUẢN LÝ<br>
+          <span class="shine-text">GIẢI ĐẤU</span><br>
+          BÓNG ĐÁ
+        </h1>
+        <p class="hero-sub">Theo dõi kết quả · Xếp hạng thời gian thực · Quy tắc FIFA chuẩn</p>
+        <div class="hero-ctas">
+          <button class="cta-primary" data-page="setup">⚙️ Thiết lập đội bóng</button>
+          <button class="cta-ghost" data-page="results">📋 Nhập kết quả ngay</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hs-item"><span class="hs-n">4</span><span class="hs-l">Bảng đấu</span></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span class="hs-n">16</span><span class="hs-l">Đội tham gia</span></div>
+          <div class="hs-sep"></div>
+          <div class="hs-item"><span class="hs-n">24</span><span class="hs-l">Trận đấu</span></div>
+        </div>
+      </div>
+
+      <div class="hero-right" aria-hidden="true">
+        <div class="trophy-scene">
+          <div class="trophy-glow"></div>
+          <div class="trophy-main">🏆</div>
+          <div class="orbit o1">
+            <div class="orb-item">⚽</div>
+          </div>
+          <div class="orbit o2">
+            <div class="orb-item">⭐</div>
+          </div>
+          <div class="orbit o3">
+            <div class="orb-item">🎯</div>
+          </div>
+          <div class="flags-ring">
+            <span style="--fd:0s">🇧🇷</span>
+            <span style="--fd:.3s">🇩🇪</span>
+            <span style="--fd:.6s">🇫🇷</span>
+            <span style="--fd:.9s">🇦🇷</span>
+            <span style="--fd:1.2s">🇪🇸</span>
+            <span style="--fd:1.5s">🇵🇹</span>
+            <span style="--fd:1.8s">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
+            <span style="--fd:2.1s">🇮🇹</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROUPS SECTION -->
+    <div class="section-head">
+      <h2 class="section-h2">CÁC BẢNG ĐẤU</h2>
+      <div class="sh-line"></div>
+      <button class="sh-btn" data-page="standings">Xem tất cả →</button>
+    </div>
+
+    <div class="groups-grid" id="home-groups-grid">
+      <!-- rendered by JS -->
+    </div>
+
+    <!-- FIFA RULES BANNER -->
+    <div class="rules-banner">
+      <div class="rb-icon">📋</div>
+      <div class="rb-content">
+        <strong>Quy tắc tính điểm FIFA</strong>
+        <div class="rb-pills">
+          <span class="pill win">🏆 Thắng = 3 điểm</span>
+          <span class="pill draw">🤝 Hoà = 1 điểm</span>
+          <span class="pill lose">❌ Thua = 0 điểm</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PAGE: SETUP
+════════════════════════════════════════ -->
+<section id="page-setup" class="page">
+  <div class="container">
+    <div class="page-hd">
+      <div class="page-hd-icon">⚙️</div>
+      <div>
+        <h2 class="page-title">Thiết lập giải đấu</h2>
+        <p class="page-sub">Đặt tên đội cho từng bảng — dữ liệu tự động lưu vào trình duyệt</p>
+      </div>
+    </div>
+
+    <div class="setup-grid">
+      <div class="setup-card" data-group="A">
+        <div class="sc-header sc-a"><span class="sc-letter">A</span><span class="sc-title">Bảng A</span><span class="sc-ball">⚽</span></div>
+        <div class="sc-body">
+          <div class="ti-row"><span class="ti-no">1</span><input class="ti" type="text" data-group="A" data-idx="0" placeholder="Tên đội 1…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">2</span><input class="ti team-name-input" type="text" data-group="A" data-idx="1" placeholder="Tên đội 2…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">3</span><input class="ti team-name-input" type="text" data-group="A" data-idx="2" placeholder="Tên đội 3…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">4</span><input class="ti team-name-input" type="text" data-group="A" data-idx="3" placeholder="Tên đội 4…" maxlength="30"></div>
+        </div>
+      </div>
+      <div class="setup-card" data-group="B">
+        <div class="sc-header sc-b"><span class="sc-letter">B</span><span class="sc-title">Bảng B</span><span class="sc-ball">⚽</span></div>
+        <div class="sc-body">
+          <div class="ti-row"><span class="ti-no">1</span><input class="ti team-name-input" type="text" data-group="B" data-idx="0" placeholder="Tên đội 1…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">2</span><input class="ti team-name-input" type="text" data-group="B" data-idx="1" placeholder="Tên đội 2…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">3</span><input class="ti team-name-input" type="text" data-group="B" data-idx="2" placeholder="Tên đội 3…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">4</span><input class="ti team-name-input" type="text" data-group="B" data-idx="3" placeholder="Tên đội 4…" maxlength="30"></div>
+        </div>
+      </div>
+      <div class="setup-card" data-group="C">
+        <div class="sc-header sc-c"><span class="sc-letter">C</span><span class="sc-title">Bảng C</span><span class="sc-ball">⚽</span></div>
+        <div class="sc-body">
+          <div class="ti-row"><span class="ti-no">1</span><input class="ti team-name-input" type="text" data-group="C" data-idx="0" placeholder="Tên đội 1…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">2</span><input class="ti team-name-input" type="text" data-group="C" data-idx="1" placeholder="Tên đội 2…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">3</span><input class="ti team-name-input" type="text" data-group="C" data-idx="2" placeholder="Tên đội 3…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">4</span><input class="ti team-name-input" type="text" data-group="C" data-idx="3" placeholder="Tên đội 4…" maxlength="30"></div>
+        </div>
+      </div>
+      <div class="setup-card" data-group="D">
+        <div class="sc-header sc-d"><span class="sc-letter">D</span><span class="sc-title">Bảng D</span><span class="sc-ball">⚽</span></div>
+        <div class="sc-body">
+          <div class="ti-row"><span class="ti-no">1</span><input class="ti team-name-input" type="text" data-group="D" data-idx="0" placeholder="Tên đội 1…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">2</span><input class="ti team-name-input" type="text" data-group="D" data-idx="1" placeholder="Tên đội 2…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">3</span><input class="ti team-name-input" type="text" data-group="D" data-idx="2" placeholder="Tên đội 3…" maxlength="30"></div>
+          <div class="ti-row"><span class="ti-no">4</span><input class="ti team-name-input" type="text" data-group="D" data-idx="3" placeholder="Tên đội 4…" maxlength="30"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-actions">
+      <button class="btn-save" id="btn-save-setup">💾 Lưu thiết lập</button>
+      <button class="btn-reset-soft" id="btn-reset-setup">🔄 Đặt lại mặc định</button>
+    </div>
+    <div id="setup-toast" class="toast hidden">✅ Đã lưu thiết lập thành công!</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PAGE: RESULTS
+════════════════════════════════════════ -->
+<section id="page-results" class="page">
+  <div class="container">
+    <div class="page-hd">
+      <div class="page-hd-icon">📋</div>
+      <div>
+        <h2 class="page-title">Nhập kết quả</h2>
+        <p class="page-sub">Kết quả tự động lưu vào trình duyệt ngay khi nhập — không mất dữ liệu khi thoát</p>
+      </div>
+    </div>
+
+    <div class="tab-bar" id="results-tabs">
+      <button class="tab-btn active" data-group="A">⚽ Bảng A</button>
+      <button class="tab-btn" data-group="B">⚽ Bảng B</button>
+      <button class="tab-btn" data-group="C">⚽ Bảng C</button>
+      <button class="tab-btn" data-group="D">⚽ Bảng D</button>
+    </div>
+
+    <div id="matches-list" class="matches-list"></div>
+
+    <div class="page-actions">
+      <button class="btn-primary" id="btn-save-results">✅ Lưu &amp; Xem xếp hạng</button>
+      <button class="btn-danger" id="btn-reset-group">🗑️ Reset bảng này</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PAGE: STANDINGS
+════════════════════════════════════════ -->
+<section id="page-standings" class="page">
+  <div class="container">
+    <div class="page-hd">
+      <div class="page-hd-icon">📊</div>
+      <div>
+        <h2 class="page-title">Bảng xếp hạng</h2>
+        <p class="page-sub">Thứ hạng theo chuẩn FIFA · Thắng 3đ · Hoà 1đ · Thua 0đ</p>
+      </div>
+    </div>
+
+    <div class="tab-bar" id="standings-tabs">
+      <button class="tab-btn active" data-group="A">📊 Bảng A</button>
+      <button class="tab-btn" data-group="B">📊 Bảng B</button>
+      <button class="tab-btn" data-group="C">📊 Bảng C</button>
+      <button class="tab-btn" data-group="D">📊 Bảng D</button>
+    </div>
+
+    <div id="advancing-teams" class="advancing-teams"></div>
+
+    <div class="table-wrap">
+      <table class="std-table" id="standings-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Đội bóng</th>
+            <th title="Trận đã đấu">TĐ</th>
+            <th title="Thắng">T</th>
+            <th title="Hoà">H</th>
+            <th title="Thua">B</th>
+            <th title="Bàn thắng">BT</th>
+            <th title="Bàn thua">BB</th>
+            <th title="Hiệu số">HS</th>
+            <th title="Điểm">Đ</th>
+          </tr>
+        </thead>
+        <tbody id="standings-body"></tbody>
+      </table>
+    </div>
+
+    <div class="std-legend">
+      <span class="leg leg-gold">🥇 Nhất bảng — vào vòng tiếp</span>
+      <span class="leg leg-silver">🥈 Nhì bảng — vào vòng tiếp</span>
+    </div>
+
+    <button class="btn-danger mt-1" id="btn-reset-standings">🗑️ Reset bảng này</button>
+  </div>
+</section>
+
+</main>
+
+<!-- ░░ FOOTER ░░ -->
+<footer class="footer">
+  <div class="container ft-inner">
+    <span class="ft-brand">⚽ Football Championship Manager</span>
+    <span class="ft-rule">Quy tắc FIFA · Thắng 3 · Hoà 1 · Thua 0</span>
+    <span class="ft-save">💾 Dữ liệu tự động lưu trình duyệt</span>
+  </div>
+</footer>
+
+<!-- ░░ CONFETTI OVERLAY ░░ -->
+<div id="confetti" class="confetti-overlay" aria-hidden="true"></div>
+
+<!-- ░░ SAVE INDICATOR ░░ -->
+<div id="save-indicator" class="save-indicator hidden">
+  <span>💾</span> Đã lưu tự động
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
