@@ -42,6 +42,9 @@
       <button class="nav-btn" data-page="standings">
         <span class="nb-ico">📊</span><span class="nb-lbl">Xếp hạng</span>
       </button>
+      <button class="nav-btn" data-page="draw">
+        <span class="nb-ico">🎡</span><span class="nb-lbl">Bốc thăm</span>
+      </button>
     </nav>
   </div>
 </header>
@@ -56,6 +59,8 @@
 
     <!-- HERO -->
     <div class="hero">
+      <div class="hero-glow-1" aria-hidden="true"></div>
+      <div class="hero-glow-2" aria-hidden="true"></div>
       <div class="hero-left">
         <div class="hero-eyebrow">
           <span class="pulse-dot"></span> FIFA WORLD CUP HOANG LONG
@@ -65,7 +70,7 @@
           <span class="shine-text">GIẢI ĐẤU</span><br>
           BÓNG ĐÁ
         </h1>
-        <p class="hero-sub">Theo dõi kết quả · Xếp hạng thời gian thực · Quy tắc FIFA chuẩn</p>
+        <p class="hero-sub">Theo dõi kết quả · <span>Xếp hạng thời gian thực</span> · Quy tắc FIFA chuẩn</p>
         <div class="hero-ctas">
           <button class="cta-primary" data-page="setup">⚙️ Thiết lập đội bóng</button>
           <button class="cta-ghost" data-page="results">📋 Nhập kết quả ngay</button>
@@ -272,6 +277,113 @@
     <button class="btn-danger mt-1" id="btn-reset-standings">🗑️ Reset bảng này</button>
   </div>
 </section>
+
+<!-- ════════════════════════════════════════
+     PAGE: DRAW
+════════════════════════════════════════ -->
+<section id="page-draw" class="page">
+  <div class="container">
+    <div class="page-hd">
+      <div class="page-hd-icon">🎡</div>
+      <div>
+        <h2 class="page-title">Bốc thăm chia bảng</h2>
+        <p class="page-sub">Thêm tên đội · Quay vòng ngẫu nhiên · Áp dụng kết quả vào giải đấu</p>
+      </div>
+    </div>
+
+    <!-- ADD TEAM ROW -->
+    <div class="draw-add-row">
+      <div class="draw-input-wrap">
+        <span class="draw-input-ico">⚽</span>
+        <input type="text" id="draw-team-input" class="draw-input" placeholder="Nhập tên đội bóng…" maxlength="30" autocomplete="off">
+      </div>
+      <button class="btn-draw-add" id="btn-draw-add">+ Thêm vào danh sách</button>
+    </div>
+
+    <!-- MAIN DRAW LAYOUT -->
+    <div class="draw-layout">
+
+      <!-- LEFT: Wheel + Controls -->
+      <div class="draw-wheel-col">
+        <div class="wheel-wrapper">
+          <!-- Pointer arrow -->
+          <div class="wheel-pointer">▼</div>
+          <canvas id="wheel-canvas" width="360" height="360"></canvas>
+        </div>
+
+        <!-- Group selector tabs -->
+        <div class="draw-group-tabs">
+          <span class="dgt-label">Quay cho bảng:</span>
+          <button class="draw-group-tab active" data-group="A">A</button>
+          <button class="draw-group-tab" data-group="B">B</button>
+          <button class="draw-group-tab" data-group="C">C</button>
+          <button class="draw-group-tab" data-group="D">D</button>
+        </div>
+
+        <button class="btn-spin" id="btn-spin">
+          <span class="spin-icon">🎯</span>
+          <span>QUAY NGẪU NHIÊN</span>
+        </button>
+      </div>
+
+      <!-- RIGHT: Teams list + Group slots -->
+      <div class="draw-right-col">
+        <!-- Team list -->
+        <div class="draw-section-head">
+          <span class="dsh-icon">👥</span>
+          <strong>Danh sách đội</strong>
+          <span class="dsh-count" id="draw-total-count"></span>
+        </div>
+        <div class="draw-team-list" id="draw-team-list">
+          <div class="draw-empty-hint">✏️ Nhập tên đội bên trên rồi nhấn <strong>+ Thêm</strong></div>
+        </div>
+
+        <!-- Group result boxes -->
+        <div class="draw-section-head" style="margin-top:1.5rem">
+          <span class="dsh-icon">📋</span>
+          <strong>Kết quả phân bảng</strong>
+        </div>
+        <div class="draw-groups-result">
+          <div class="draw-group-box" data-group="A">
+            <div class="dgb-header dgb-a"><span>Bảng A</span><span class="dgb-count">0/4</span></div>
+            <div class="dgb-slots" id="draw-slots-A"><span class="draw-slot-empty">— trống —</span></div>
+          </div>
+          <div class="draw-group-box" data-group="B">
+            <div class="dgb-header dgb-b"><span>Bảng B</span><span class="dgb-count">0/4</span></div>
+            <div class="dgb-slots" id="draw-slots-B"><span class="draw-slot-empty">— trống —</span></div>
+          </div>
+          <div class="draw-group-box" data-group="C">
+            <div class="dgb-header dgb-c"><span>Bảng C</span><span class="dgb-count">0/4</span></div>
+            <div class="dgb-slots" id="draw-slots-C"><span class="draw-slot-empty">— trống —</span></div>
+          </div>
+          <div class="draw-group-box" data-group="D">
+            <div class="dgb-header dgb-d"><span>Bảng D</span><span class="dgb-count">0/4</span></div>
+            <div class="dgb-slots" id="draw-slots-D"><span class="draw-slot-empty">— trống —</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="draw-actions">
+      <button class="btn-primary" id="btn-commit-draw">✅ Áp dụng vào giải đấu</button>
+      <button class="btn-danger" id="btn-reset-draw">🗑️ Xóa tất cả</button>
+    </div>
+    <div id="draw-toast" class="toast hidden" style="margin-top:.75rem">✅ Đã áp dụng kết quả bốc thăm vào giải đấu!</div>
+
+    <!-- Spin result overlay -->
+    <div id="spin-result-overlay" class="spin-result-overlay">
+      <div class="sro-inner">
+        <div class="sro-ball">⚽</div>
+        <div class="sro-label">ĐỘI ĐƯỢC CHỌN</div>
+        <div class="sro-name" id="spin-result-name">—</div>
+        <div class="sro-arrow">→</div>
+        <div class="sro-group" id="spin-result-group">Bảng A</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 </main>
 
