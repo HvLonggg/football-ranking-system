@@ -661,6 +661,8 @@ body {
 .group-card[data-group="C"] .team-dot { background: var(--gold); }
 .group-card[data-group="D"] .team-dot { background: #9B70F0; }
 .group-card:hover .team-dot { transform: scale(1.5); }
+.group-team-item.team-empty { color: var(--text-light); font-style: italic; font-weight: 400; }
+.group-team-item.team-empty .team-dot { background: var(--border-mid) !important; }
 
 .group-card-btns {
   display: grid; grid-template-columns: 1fr 1fr;
