@@ -151,50 +151,20 @@
       </div>
     </div>
 
-    <div class="setup-grid">
-      <div class="setup-card" data-group="A">
-        <div class="sc-header sc-a"><span class="sc-letter">A</span><span class="sc-title">Bảng A</span><span class="sc-ball">⚽</span></div>
-        <div class="sc-body">
-          <div class="ti-row"><span class="ti-no">1</span><input class="ti" type="text" data-group="A" data-idx="0" placeholder="Tên đội 1…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">2</span><input class="ti team-name-input" type="text" data-group="A" data-idx="1" placeholder="Tên đội 2…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">3</span><input class="ti team-name-input" type="text" data-group="A" data-idx="2" placeholder="Tên đội 3…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">4</span><input class="ti team-name-input" type="text" data-group="A" data-idx="3" placeholder="Tên đội 4…" maxlength="30"></div>
-        </div>
-      </div>
-      <div class="setup-card" data-group="B">
-        <div class="sc-header sc-b"><span class="sc-letter">B</span><span class="sc-title">Bảng B</span><span class="sc-ball">⚽</span></div>
-        <div class="sc-body">
-          <div class="ti-row"><span class="ti-no">1</span><input class="ti team-name-input" type="text" data-group="B" data-idx="0" placeholder="Tên đội 1…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">2</span><input class="ti team-name-input" type="text" data-group="B" data-idx="1" placeholder="Tên đội 2…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">3</span><input class="ti team-name-input" type="text" data-group="B" data-idx="2" placeholder="Tên đội 3…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">4</span><input class="ti team-name-input" type="text" data-group="B" data-idx="3" placeholder="Tên đội 4…" maxlength="30"></div>
-        </div>
-      </div>
-      <div class="setup-card" data-group="C">
-        <div class="sc-header sc-c"><span class="sc-letter">C</span><span class="sc-title">Bảng C</span><span class="sc-ball">⚽</span></div>
-        <div class="sc-body">
-          <div class="ti-row"><span class="ti-no">1</span><input class="ti team-name-input" type="text" data-group="C" data-idx="0" placeholder="Tên đội 1…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">2</span><input class="ti team-name-input" type="text" data-group="C" data-idx="1" placeholder="Tên đội 2…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">3</span><input class="ti team-name-input" type="text" data-group="C" data-idx="2" placeholder="Tên đội 3…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">4</span><input class="ti team-name-input" type="text" data-group="C" data-idx="3" placeholder="Tên đội 4…" maxlength="30"></div>
-        </div>
-      </div>
-      <div class="setup-card" data-group="D">
-        <div class="sc-header sc-d"><span class="sc-letter">D</span><span class="sc-title">Bảng D</span><span class="sc-ball">⚽</span></div>
-        <div class="sc-body">
-          <div class="ti-row"><span class="ti-no">1</span><input class="ti team-name-input" type="text" data-group="D" data-idx="0" placeholder="Tên đội 1…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">2</span><input class="ti team-name-input" type="text" data-group="D" data-idx="1" placeholder="Tên đội 2…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">3</span><input class="ti team-name-input" type="text" data-group="D" data-idx="2" placeholder="Tên đội 3…" maxlength="30"></div>
-          <div class="ti-row"><span class="ti-no">4</span><input class="ti team-name-input" type="text" data-group="D" data-idx="3" placeholder="Tên đội 4…" maxlength="30"></div>
-        </div>
-      </div>
+    <!-- Info banner -->
+    <div class="setup-info-banner">
+      <span class="sib-icon">💡</span>
+      <div><strong>Mỗi bảng có thể có 2–6 đội</strong> — tất cả đội sẽ đá vòng tròn (round-robin). Nhập ít nhất 2 đội để bắt đầu.</div>
     </div>
 
+    <!-- Dynamic setup grid rendered by JS -->
+    <div class="setup-grid" id="setup-grid"></div>
+
     <div class="setup-actions">
-      <button class="btn-save" id="btn-save-setup">💾 Lưu thiết lập</button>
-      <button class="btn-reset-soft" id="btn-reset-setup">🔄 Đặt lại mặc định</button>
+      <button class="btn-save" id="btn-save-setup">💾 Lưu & Tạo lịch đấu</button>
+      <button class="btn-reset-soft" id="btn-reset-setup">🔄 Đặt lại tất cả</button>
     </div>
-    <div id="setup-toast" class="toast hidden">✅ Đã lưu thiết lập thành công!</div>
+    <div id="setup-toast" class="toast hidden">✅ Đã lưu! Lịch đấu vòng tròn đã được tạo.</div>
   </div>
 </section>
 
@@ -291,6 +261,12 @@
       </div>
     </div>
 
+    <!-- INFO BANNER -->
+    <div class="draw-info-banner">
+      <span>💡</span>
+      <div>Nhập tên đội → chọn <strong>Bảng đích</strong> → nhấn <strong>🎯 Quay</strong>. Mỗi bảng nhận <strong>bất kỳ số đội nào ≥ 2</strong> — lịch vòng tròn tự tạo đúng số thực tế.</div>
+    </div>
+
     <!-- ADD TEAM ROW -->
     <div class="draw-add-row">
       <div class="draw-input-wrap">
@@ -313,7 +289,7 @@
 
         <!-- Group selector tabs -->
         <div class="draw-group-tabs">
-          <span class="dgt-label">Quay cho bảng:</span>
+          <span class="dgt-label">Đưa vào Bảng:</span>
           <button class="draw-group-tab active" data-group="A">A</button>
           <button class="draw-group-tab" data-group="B">B</button>
           <button class="draw-group-tab" data-group="C">C</button>
@@ -322,7 +298,7 @@
 
         <button class="btn-spin" id="btn-spin">
           <span class="spin-icon">🎯</span>
-          <span>QUAY NGẪU NHIÊN</span>
+          <span>QUAY BỐC THĂM</span>
         </button>
       </div>
 
@@ -345,19 +321,19 @@
         </div>
         <div class="draw-groups-result">
           <div class="draw-group-box" data-group="A">
-            <div class="dgb-header dgb-a"><span>Bảng A</span><span class="dgb-count">0/4</span></div>
+            <div class="dgb-header dgb-a"><span>Bảng A</span><span class="dgb-count">0 đội</span></div>
             <div class="dgb-slots" id="draw-slots-A"><span class="draw-slot-empty">— trống —</span></div>
           </div>
           <div class="draw-group-box" data-group="B">
-            <div class="dgb-header dgb-b"><span>Bảng B</span><span class="dgb-count">0/4</span></div>
+            <div class="dgb-header dgb-b"><span>Bảng B</span><span class="dgb-count">0 đội</span></div>
             <div class="dgb-slots" id="draw-slots-B"><span class="draw-slot-empty">— trống —</span></div>
           </div>
           <div class="draw-group-box" data-group="C">
-            <div class="dgb-header dgb-c"><span>Bảng C</span><span class="dgb-count">0/4</span></div>
+            <div class="dgb-header dgb-c"><span>Bảng C</span><span class="dgb-count">0 đội</span></div>
             <div class="dgb-slots" id="draw-slots-C"><span class="draw-slot-empty">— trống —</span></div>
           </div>
           <div class="draw-group-box" data-group="D">
-            <div class="dgb-header dgb-d"><span>Bảng D</span><span class="dgb-count">0/4</span></div>
+            <div class="dgb-header dgb-d"><span>Bảng D</span><span class="dgb-count">0 đội</span></div>
             <div class="dgb-slots" id="draw-slots-D"><span class="draw-slot-empty">— trống —</span></div>
           </div>
         </div>
