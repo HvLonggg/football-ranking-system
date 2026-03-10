@@ -1,34 +1,25 @@
-/* ═══════════════════════════════════════════════════════════════
-   ⚙️  CẤU HÌNH FIREBASE — điền URL dự án của bạn vào đây
-   
-   Cách lấy URL Firebase:
-   1. Vào https://console.firebase.google.com → Tạo dự án
-   2. Vào Realtime Database → Tạo cơ sở dữ liệu (chọn chế độ Test)
-   3. Copy URL dạng: https://tên-dự-án-default-rtdb.firebaseio.com
-   4. Dán vào FIREBASE_URL bên dưới rồi lưu file này
-   
-   Ví dụ:
-   const FIREBASE_URL = 'https://football-manager-abc12-default-rtdb.firebaseio.com';
-═══════════════════════════════════════════════════════════════ */
-const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-southeast1.firebasedatabase.app/'; 
+
+const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-southeast1.firebasedatabase.app/';
 
 
 (function () {
   'use strict';
 
-  const LOCAL_KEY    = 'fcm_v7_local';
+  const LOCAL_KEY     = 'fcm_v7_local';
   const FIREBASE_PATH = '/fcm_data.json';
   const GROUPS        = ['A', 'B', 'C', 'D'];
   const MIN_TEAMS     = 2;
   const MAX_TEAMS     = 6;
   const GROUP_COLORS  = { A: 'sc-a', B: 'sc-b', C: 'sc-c', D: 'sc-d' };
-  const SYNC_INTERVAL = 5000; // poll mỗi 5 giây
 
   const useFirebase = typeof FIREBASE_URL === 'string' && FIREBASE_URL.trim().length > 0;
 
   // ─── Trạng thái sync ───────────────────────────────────────
-  let lastSavedHash = null;   // hash của data lần cuối đã lưu (tránh loop)
-  let isSaving = false;
+  let lastSavedHash     = null;
+  let isSaving          = false;
+  let saveDebounceTimer = null;
+  let firebaseEventSource = null;
+  let suppressNextSSE   = false; // chặn echo sau khi tự mình save
 
   function hashStr(s) {
     let h = 0;
@@ -56,6 +47,98 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
     return await res.json();
   }
 
+  // ─── Firebase SSE — lắng nghe thay đổi REAL-TIME ──────────
+  // Firebase Realtime Database hỗ trợ EventSource (SSE) tại chính URL .json
+  // → cập nhật tức thì cho tất cả trình duyệt, không cần polling
+  function startFirebaseStream() {
+    if (!useFirebase) return;
+
+    // Đóng kết nối cũ nếu có
+    if (firebaseEventSource) {
+      firebaseEventSource.close();
+      firebaseEventSource = null;
+    }
+
+    const url = FIREBASE_URL.replace(/\/$/, '') + FIREBASE_PATH;
+
+    try {
+      const es = new EventSource(url);
+      firebaseEventSource = es;
+
+      // Sự kiện "put" — Firebase gửi toàn bộ dữ liệu tại path
+      es.addEventListener('put', (e) => {
+        try {
+          const payload = JSON.parse(e.data);
+          const remote  = payload.data;
+
+          // Firebase trả về null khi path chưa có dữ liệu
+          if (!remote || !remote.groups) return;
+
+          const s = JSON.stringify(remote);
+          const h = hashStr(s);
+
+          // Bỏ qua echo từ chính lần save của mình vừa rồi
+          if (suppressNextSSE) {
+            suppressNextSSE = false;
+            lastSavedHash = h;
+            return;
+          }
+
+          // Chỉ cập nhật khi dữ liệu thực sự thay đổi
+          if (lastSavedHash !== null && h === lastSavedHash) return;
+
+          lastSavedHash = h;
+          appData = remote;
+          lsWrite(appData);
+          if (remote.drawResult?.teams) drawTeams = [...remote.drawResult.teams];
+
+          rerenderCurrentPage();
+          showRemoteUpdateToast();
+          setBadge('online');
+        } catch (err) {
+          console.warn('SSE parse error:', err);
+        }
+      });
+
+      es.addEventListener('error', () => {
+        setBadge('offline');
+        es.close();
+        firebaseEventSource = null;
+        // Thử kết nối lại sau 8 giây
+        setTimeout(startFirebaseStream, 8000);
+      });
+
+    } catch (err) {
+      console.warn('EventSource không hoạt động, chuyển sang polling:', err);
+      startPollingFallback();
+    }
+  }
+
+  // ─── Polling fallback (khi SSE không khả dụng) ────────────
+  function startPollingFallback() {
+    setInterval(async () => {
+      if (isSaving) return;
+      try {
+        const remote = await fbRead();
+        if (!remote || !remote.groups) return;
+        const s = JSON.stringify(remote);
+        const h = hashStr(s);
+        if (lastSavedHash !== null && h !== lastSavedHash) {
+          lastSavedHash = h;
+          appData = remote;
+          lsWrite(appData);
+          if (remote.drawResult?.teams) drawTeams = [...remote.drawResult.teams];
+          rerenderCurrentPage();
+          showRemoteUpdateToast();
+        }
+        if (lastSavedHash === null) lastSavedHash = h;
+        setBadge('online');
+      } catch (e) {
+        setBadge('offline');
+      }
+    }, 5000);
+  }
+
   // ─── LocalStorage fallback ─────────────────────────────────
   function lsWrite(data) {
     try { localStorage.setItem(LOCAL_KEY, JSON.stringify(data)); } catch(e) {}
@@ -67,42 +150,54 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
     } catch(e) { return null; }
   }
 
-  // ─── Unified save / load ───────────────────────────────────
+  // ─── Save data ─────────────────────────────────────────────
   async function saveData() {
-    if (isSaving) return;
+    // Lưu local ngay lập tức để không bao giờ mất dữ liệu
+    lsWrite(appData);
+
+    if (!useFirebase) {
+      setBadge('local');
+      showSaveIndicator();
+      return;
+    }
+
+    if (isSaving) return; // đang save, bỏ qua (debounce sẽ gọi lại)
     isSaving = true;
     setBadge('saving');
 
-    // Luôn lưu local trước để không mất dữ liệu
-    lsWrite(appData);
-
-    if (useFirebase) {
-      try {
-        await fbWrite(appData);
-        const s = JSON.stringify(appData);
-        lastSavedHash = hashStr(s);
-        setBadge('online');
-      } catch(e) {
-        console.warn('Firebase save failed, using local only', e);
-        setBadge('offline');
-      }
-    } else {
-      setBadge('local');
+    try {
+      await fbWrite(appData);
+      const s = JSON.stringify(appData);
+      lastSavedHash = hashStr(s);
+      suppressNextSSE = true; // chặn echo SSE ngay sau khi save
+      setBadge('online');
+      showSaveIndicator();
+    } catch(e) {
+      console.warn('Firebase save failed, using local only', e);
+      setBadge('offline');
+      suppressNextSSE = false;
+    } finally {
+      isSaving = false;
     }
-
-    showSaveIndicator();
-    isSaving = false;
   }
 
-  async function loadData() {
-    const def = createDefaultData();
+  // Phiên bản debounce của saveData — dùng khi người dùng đang gõ
+  function saveDataDebounced(delayMs) {
+    delayMs = delayMs || 600;
+    clearTimeout(saveDebounceTimer);
+    // Lưu local ngay lập tức để UI không bị chậm
+    lsWrite(appData);
+    // Firebase sẽ cập nhật sau khi dừng gõ
+    saveDebounceTimer = setTimeout(() => saveData(), delayMs);
+  }
 
+  // ─── Load data ─────────────────────────────────────────────
+  async function loadData() {
     if (useFirebase) {
       try {
         setBadge('saving');
         const remote = await fbRead();
         if (remote && remote.groups) {
-          // Cũng lưu local để offline fallback
           lsWrite(remote);
           const s = JSON.stringify(remote);
           lastSavedHash = hashStr(s);
@@ -114,50 +209,18 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
         setBadge('offline');
       }
     }
-
-    // Fallback: localStorage
     const local = lsRead();
     if (local && local.groups) return local;
-    return def;
-  }
-
-  // ─── Polling: kiểm tra thay đổi từ xa ────────────────────
-  async function pollRemote() {
-    if (!useFirebase || isSaving) return;
-    try {
-      const remote = await fbRead();
-      if (!remote || !remote.groups) return;
-
-      const s = JSON.stringify(remote);
-      const h = hashStr(s);
-
-      if (lastSavedHash !== null && h !== lastSavedHash) {
-        // Có dữ liệu mới từ trình duyệt khác
-        lastSavedHash = h;
-        appData = remote;
-        lsWrite(appData);
-        if (remote.drawResult?.teams) drawTeams = [...remote.drawResult.teams];
-        rerenderCurrentPage();
-        showRemoteUpdateToast();
-      }
-
-      if (lastSavedHash === null) {
-        lastSavedHash = h;
-      }
-    } catch(e) {
-      setBadge('offline');
-    }
+    return createDefaultData();
   }
 
   // ─── Badge UI ──────────────────────────────────────────────
-  // states: 'local' | 'online' | 'offline' | 'saving'
   function setBadge(state) {
     const badge  = document.getElementById('sync-badge');
     const dot    = document.getElementById('sync-dot');
     const label  = document.getElementById('sync-label');
     const footer = document.getElementById('ft-save-label');
     if (!badge) return;
-
     badge.className = 'sync-status-badge ' + state;
     if (state === 'online')  { dot.className='sync-dot green'; label.textContent='🌐 Cloud Sync'; if(footer) footer.textContent='🌐 Đồng bộ cloud'; }
     if (state === 'offline') { dot.className='sync-dot red';   label.textContent='⚠️ Offline'; if(footer) footer.textContent='⚠️ Offline — đang dùng local'; }
@@ -179,7 +242,7 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
     const pairs = [];
     for (let i = 0; i < valid.length; i++) {
       for (let j = i + 1; j < valid.length; j++) {
-        const key = valid[i] + '|' + valid[j];
+        const key  = valid[i] + '|' + valid[j];
         const rkey = valid[j] + '|' + valid[i];
         const saved = scoreMap[key] || (scoreMap[rkey] ? { s1: scoreMap[rkey].s2, s2: scoreMap[rkey].s1 } : null);
         pairs.push({ team1: valid[i], team2: valid[j], score1: saved ? saved.s1 : null, score2: saved ? saved.s2 : null });
@@ -241,7 +304,7 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
 
   function rerenderCurrentPage() {
     const p = getCurrentPageId();
-    if (p === 'home')      renderHome();
+    if (p === 'home')           renderHome();
     else if (p === 'setup')     renderSetup();
     else if (p === 'results')   renderMatchesList();
     else if (p === 'standings') renderStandings();
@@ -350,7 +413,8 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
         if (!appData.groups[g]) appData.groups[g] = { teams: [], matches: [] };
         appData.groups[g].teams[idx] = inp.value.trim();
         updateMatchCountBadge(g);
-        saveData();
+        // Debounce: đợi 600ms sau lần gõ cuối mới gửi Firebase
+        saveDataDebounced(600);
       });
     });
   }
@@ -467,7 +531,8 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
         m.score1 = v1 === '' ? null : parseInt(v1, 10);
         m.score2 = v2 === '' ? null : parseInt(v2, 10);
         row.classList.toggle('has-result', v1 !== '' && v2 !== '');
-        saveData();
+        // Debounce khi nhập điểm số
+        saveDataDebounced(400);
       };
       in1.addEventListener('input', update);
       in2.addEventListener('input', update);
@@ -756,9 +821,15 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
 
   document.getElementById('btn-save-setup')?.addEventListener('click', saveSetup);
   document.getElementById('btn-reset-setup')?.addEventListener('click', () => { if (confirm('Xóa tất cả đội và lịch đấu?')) resetSetup(); });
-  document.getElementById('btn-save-results')?.addEventListener('click', () => {
-    saveData(); spawnConfetti(); currentStandingsGroup = currentResultsGroup; showPage('standings', currentResultsGroup);
+
+  // await saveData() trước khi chuyển trang để đảm bảo đã ghi Firebase xong
+  document.getElementById('btn-save-results')?.addEventListener('click', async () => {
+    await saveData();
+    spawnConfetti();
+    currentStandingsGroup = currentResultsGroup;
+    showPage('standings', currentResultsGroup);
   });
+
   document.getElementById('btn-reset-group')?.addEventListener('click', () => { if (confirm('Reset kết quả Bảng '+currentResultsGroup+'?')) resetGroup(currentResultsGroup); });
   document.getElementById('btn-reset-standings')?.addEventListener('click', () => { if (confirm('Reset kết quả Bảng '+currentStandingsGroup+'?')) resetGroup(currentStandingsGroup); });
 
@@ -779,7 +850,6 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
   document.querySelectorAll('.draw-group-tab').forEach(btn =>
     btn.addEventListener('click', () => { currentDrawGroup=btn.dataset.group; updateGroupTabActive(); }));
 
-  // Firebase setup banner
   document.getElementById('fb-howto-btn')?.addEventListener('click', e => {
     e.preventDefault();
     document.getElementById('howto-modal')?.classList.remove('hidden');
@@ -799,7 +869,6 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
     initParticles();
 
     if (!useFirebase) {
-      // Hiện banner hướng dẫn Firebase
       const banner = document.getElementById('firebase-setup-banner');
       if (banner) banner.classList.remove('hidden');
       setBadge('local');
@@ -810,8 +879,9 @@ const FIREBASE_URL = 'https://football-championship-manager-default-rtdb.asia-so
     showPage('home');
 
     if (useFirebase) {
-      // Poll mỗi 5 giây để lấy cập nhật từ trình duyệt khác
-      setInterval(pollRemote, SYNC_INTERVAL);
+      // Khởi động Firebase SSE — lắng nghe thay đổi real-time
+      // Tất cả trình duyệt sẽ nhận cập nhật ngay lập tức khi có thay đổi
+      startFirebaseStream();
     }
   }
 
