@@ -1,385 +1,1485 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⚽ Football Championship Manager</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ Football Championship Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
+    <style>
+/* ═══════════════════════════════════════════════
+   FOOTBALL CHAMPIONSHIP MANAGER — VIBRANT PREMIUM
+   Bold · Vivid · Professional · World Cup Energy
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --sky:#F0F7FF;--white:#FFFFFF;--off:#F8FAFF;
+  --blue:#1253CC;--blue-mid:#1E6AFF;--blue-light:#5A9AFF;--blue-pale:#E0EAFF;--blue-dark:#0A2E7A;
+  --green:#007A48;--green-mid:#00A05C;--green-light:#2ECC8B;--green-pale:#D6F5E9;--green-neon:#00FF87;
+  --gold:#FF9500;--gold-mid:#FFBE00;--gold-bright:#FFD700;--gold-pale:#FFF7D6;--gold-glow:rgba(255,190,0,.5);
+  --red:#E0220A;--red-light:#FF4D2E;--red-pale:#FFEBE6;
+  --purple:#6040E0;--teal:#00D4FF;--pink:#FF3085;
+  --text:#0D1B3E;--text-mid:#2A3E6A;--text-muted:#6B7A9A;--text-light:#9AAABB;
+  --border:#D8E4F5;--border-mid:#B8CCED;--card:#FFFFFF;
+  --sh-xs:0 1px 4px rgba(18,83,204,.10);--sh-sm:0 3px 12px rgba(18,83,204,.13);
+  --sh-md:0 8px 28px rgba(18,83,204,.16);--sh-lg:0 16px 52px rgba(18,83,204,.20);
+  --sh-xl:0 24px 72px rgba(18,83,204,.26);--sh-gold:0 8px 32px rgba(255,190,0,.45);
+  --grad-blue:linear-gradient(135deg,#0A2E7A 0%,#1253CC 50%,#1E6AFF 100%);
+  --grad-green:linear-gradient(135deg,#007A48 0%,#00A05C 50%,#2ECC8B 100%);
+  --grad-gold:linear-gradient(135deg,#FF6B00 0%,#FF9500 40%,#FFBE00 70%,#FFD700 100%);
+  --grad-hero:linear-gradient(145deg,#060F2E 0%,#0D1F5C 35%,#1253CC 70%,#0A4FAA 100%);
+  --grad-sky:linear-gradient(160deg,#E8F2FF 0%,#F3F7FF 50%,#EDF5FF 100%);
+  --grad-purple:linear-gradient(135deg,#3B1FA0,#6040E0,#8B5CF6);
+  --grad-teal:linear-gradient(135deg,#006B8A,#0099CC,#00D4FF);
+  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;--radius-2xl:36px;
+  --font-display:'Bebas Neue',sans-serif;--font-cond:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif;
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);--ease-out:cubic-bezier(0.22,1,0.36,1);--ease-smooth:cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);font-size:16px;line-height:1.5;color:var(--text);background:var(--grad-sky);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+.container{width:100%;max-width:1160px;margin:0 auto;padding:0 1.5rem;}
 
-<!-- ░░ ANIMATED BG LAYER ░░ -->
-<div class="bg-layer" aria-hidden="true">
-  <div class="bg-pitch"></div>
-  <div class="bg-glow g1"></div>
-  <div class="bg-glow g2"></div>
-  <div class="bg-glow g3"></div>
-  <div class="particles" id="particles"></div>
-</div>
+/* BG */
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.bg-pitch{position:absolute;inset:0;background:radial-gradient(ellipse 90% 70% at 50% -10%,rgba(18,83,204,.09) 0%,transparent 65%),radial-gradient(ellipse 60% 50% at 100% 100%,rgba(0,160,92,.07) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 0% 70%,rgba(255,149,0,.05) 0%,transparent 60%);}
+.bg-pitch::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(18,83,204,.035) 59px,rgba(18,83,204,.035) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(18,83,204,.035) 59px,rgba(18,83,204,.035) 60px);animation:pitchScroll 50s linear infinite;}
+@keyframes pitchScroll{to{background-position:60px 60px;}}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(90px);animation:glowDrift 20s ease-in-out infinite alternate;}
+.g1{width:700px;height:700px;top:-250px;left:-150px;background:rgba(18,83,204,.14);animation-delay:0s;}
+.g2{width:580px;height:580px;bottom:-180px;right:-100px;background:rgba(0,160,92,.11);animation-delay:7s;}
+.g3{width:450px;height:450px;top:35%;left:42%;background:rgba(255,149,0,.08);animation-delay:14s;}
+@keyframes glowDrift{0%{transform:translate(0,0) scale(1);opacity:.6;}100%{transform:translate(50px,40px) scale(1.15);opacity:.9;}}
+.particles{position:absolute;inset:0;}
+.particle{position:absolute;border-radius:50%;animation:particleFloat linear infinite;opacity:0;}
+@keyframes particleFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0;}8%{opacity:.7;}92%{opacity:.4;}100%{transform:translateY(-120px) rotate(720deg);opacity:0;}}
 
-<!-- ░░ HEADER ░░ -->
-<header class="header">
-  <div class="container hd-inner">
-    <a class="brand" href="#" onclick="return false;" data-page="home">
-      <span class="brand-cup">🏆</span>
-      <span class="brand-text">
-        <strong>FOOTBALL</strong>
-        <em>Championship Manager</em>
-      </span>
-    </a>
-    <nav class="nav" role="navigation">
-      <button class="nav-btn active" data-page="home">
-        <span class="nb-ico">🏠</span><span class="nb-lbl">Trang chủ</span>
-      </button>
-      <button class="nav-btn" data-page="setup">
-        <span class="nb-ico">⚙️</span><span class="nb-lbl">Thiết lập</span>
-      </button>
-      <button class="nav-btn" data-page="results">
-        <span class="nb-ico">📋</span><span class="nb-lbl">Kết quả</span>
-      </button>
-      <button class="nav-btn" data-page="standings">
-        <span class="nb-ico">📊</span><span class="nb-lbl">Xếp hạng</span>
-      </button>
-      <button class="nav-btn" data-page="draw">
-        <span class="nb-ico">🎡</span><span class="nb-lbl">Bốc thăm</span>
-      </button>
-    </nav>
-  </div>
-</header>
+/* HEADER */
+.header{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-bottom:2px solid rgba(18,83,204,.12);box-shadow:0 2px 0 rgba(18,83,204,.08),0 4px 20px rgba(18,83,204,.10);padding:.7rem 0;}
+.hd-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:.8rem;text-decoration:none;color:inherit;}
+.brand-cup{font-size:2.2rem;display:block;animation:cupWobble 3.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(255,190,0,.55));}
+@keyframes cupWobble{0%,100%{transform:rotate(-7deg) scale(1);}50%{transform:rotate(7deg) scale(1.1);}}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;}
+.brand-text strong{font-family:var(--font-display);font-size:1.6rem;letter-spacing:.1em;background:var(--grad-blue);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.brand-text em{font-style:normal;font-family:var(--font-cond);font-size:.68rem;font-weight:700;letter-spacing:.22em;color:var(--text-muted);text-transform:uppercase;}
+.nav{display:flex;gap:.3rem;flex-wrap:wrap;}
+.nav-btn{display:flex;align-items:center;gap:.45rem;padding:.55rem 1.1rem;border:2px solid transparent;background:transparent;color:var(--text-mid);font-family:var(--font-cond);font-size:.98rem;font-weight:700;letter-spacing:.05em;border-radius:var(--radius-sm);cursor:pointer;transition:all .25s var(--ease-spring);white-space:nowrap;}
+.nav-btn .nb-ico{font-size:1.05rem;transition:transform .25s var(--ease-spring);}
+.nav-btn:hover{background:var(--blue-pale);border-color:rgba(18,83,204,.22);color:var(--blue);transform:translateY(-2px);box-shadow:var(--sh-sm);}
+.nav-btn:hover .nb-ico{transform:scale(1.2);}
+.nav-btn.active{background:var(--grad-blue);border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(18,83,204,.4);transform:translateY(-1px);}
 
-<main class="main">
+/* LIVE SYNC BADGE */
+.live-badge{display:flex;align-items:center;gap:.4rem;padding:.32rem .75rem;background:rgba(0,200,100,.12);border:1.5px solid rgba(0,200,100,.35);border-radius:30px;font-family:var(--font-cond);font-size:.78rem;font-weight:800;letter-spacing:.07em;color:#007A48;white-space:nowrap;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#00C864;animation:livePulse 1.4s ease-in-out infinite;}
+@keyframes livePulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:.5;}}
+.live-badge.syncing{background:rgba(255,149,0,.12);border-color:rgba(255,149,0,.35);color:#C07000;}
+.live-badge.syncing .live-dot{background:#FF9500;}
 
-<!-- ════════════════════════════════════════
-     PAGE: HOME
-════════════════════════════════════════ -->
-<section id="page-home" class="page active">
-  <div class="container">
+/* PAGES */
+.main{flex:1;padding:2.5rem 0 5rem;position:relative;z-index:1;}
+.page{display:none;}
+.page.active{display:block;animation:pageReveal .5s var(--ease-out) both;}
+@keyframes pageReveal{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+.page-hd{display:flex;align-items:center;gap:1.1rem;margin-bottom:2rem;padding-bottom:1.4rem;border-bottom:2px solid var(--border);}
+.page-hd-icon{width:60px;height:60px;flex-shrink:0;border-radius:var(--radius-md);background:var(--grad-blue);display:flex;align-items:center;justify-content:center;font-size:1.7rem;box-shadow:0 6px 24px rgba(18,83,204,.35);}
+.page-title{font-family:var(--font-display);font-size:2.4rem;letter-spacing:.06em;color:var(--text);}
+.page-sub{font-size:.9rem;color:var(--text-muted);margin-top:.2rem;font-weight:500;}
 
-    <!-- HERO -->
-    <div class="hero">
-      <div class="hero-glow-1" aria-hidden="true"></div>
-      <div class="hero-glow-2" aria-hidden="true"></div>
-      <div class="hero-left">
-        <div class="hero-eyebrow">
-          <span class="pulse-dot"></span> FIFA WORLD CUP HOANG LONG
-        </div>
-        <h1 class="hero-h1">
-          QUẢN LÝ<br>
-          <span class="shine-text">GIẢI ĐẤU</span><br>
-          BÓNG ĐÁ
-        </h1>
-        <p class="hero-sub">Theo dõi kết quả · <span>Xếp hạng thời gian thực</span> · Quy tắc FIFA chuẩn</p>
-        <div class="hero-ctas">
-          <button class="cta-primary" data-page="setup">⚙️ Thiết lập đội bóng</button>
-          <button class="cta-ghost" data-page="results">📋 Nhập kết quả ngay</button>
-        </div>
-        <div class="hero-stats">
-          <div class="hs-item"><span class="hs-n">4</span><span class="hs-l">Bảng đấu</span></div>
-          <div class="hs-sep"></div>
-          <div class="hs-item"><span class="hs-n">16</span><span class="hs-l">Đội tham gia</span></div>
-          <div class="hs-sep"></div>
-          <div class="hs-item"><span class="hs-n">24</span><span class="hs-l">Trận đấu</span></div>
-        </div>
+/* HERO */
+.hero{display:grid;grid-template-columns:1fr 440px;gap:2.5rem;align-items:center;min-height:440px;margin-bottom:3.5rem;padding:3rem 3rem 3rem 3.5rem;background:var(--grad-hero);border-radius:var(--radius-2xl);box-shadow:var(--sh-xl),0 0 0 1px rgba(255,255,255,.06);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(255,255,255,.025) 49px,rgba(255,255,255,.025) 50px),repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(255,255,255,.018) 49px,rgba(255,255,255,.018) 50px);pointer-events:none;}
+.hero::after{content:'';position:absolute;width:340px;height:340px;border-radius:50%;border:2px solid rgba(255,255,255,.06);top:50%;left:55%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 0 90px rgba(255,255,255,.018);}
+.hero-glow-1{position:absolute;width:500px;height:400px;top:-100px;right:-50px;background:radial-gradient(ellipse,rgba(255,190,0,.12) 0%,transparent 70%);pointer-events:none;}
+.hero-glow-2{position:absolute;width:300px;height:300px;bottom:-80px;left:100px;background:radial-gradient(ellipse,rgba(0,212,255,.10) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.55rem;padding:.35rem 1rem;background:rgba(255,190,0,.18);border:1.5px solid rgba(255,190,0,.45);border-radius:30px;color:var(--gold-mid);font-family:var(--font-cond);font-size:.75rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.1rem;position:relative;z-index:2;}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--gold-mid);animation:livePulse 1.4s ease-in-out infinite;display:inline-block;}
+.hero-h1{font-family:var(--font-display);font-size:4.8rem;line-height:.96;letter-spacing:.03em;color:#fff;margin-bottom:1.1rem;position:relative;z-index:2;text-shadow:0 4px 30px rgba(0,0,0,.3);}
+.shine-text{display:inline-block;background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;filter:drop-shadow(0 0 20px rgba(255,190,0,.5));}
+.shine-text::after{content:'';position:absolute;top:0;left:-120%;width:70%;height:100%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.55) 50%,transparent 100%);animation:shineSwipe 3.5s ease-in-out infinite 1.2s;}
+@keyframes shineSwipe{0%{left:-120%;}100%{left:220%;}}
+.hero-sub{color:rgba(255,255,255,.65);font-size:1.05rem;font-weight:500;margin-bottom:2.2rem;position:relative;z-index:2;letter-spacing:.02em;}
+.hero-sub span{color:rgba(255,255,255,.9);font-weight:700;}
+.hero-ctas{display:flex;gap:.85rem;flex-wrap:wrap;margin-bottom:2.2rem;position:relative;z-index:2;}
+.cta-primary{padding:.9rem 2rem;background:var(--grad-gold);color:#1a0a00;font-family:var(--font-cond);font-size:1.1rem;font-weight:900;letter-spacing:.08em;border:none;border-radius:var(--radius-md);cursor:pointer;box-shadow:var(--sh-gold),0 2px 0 rgba(255,255,255,.3) inset;transition:all .28s var(--ease-spring);position:relative;overflow:hidden;}
+.cta-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,transparent 100%);pointer-events:none;}
+.cta-primary:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 14px 36px rgba(255,149,0,.65);}
+.cta-ghost{padding:.9rem 2rem;background:rgba(255,255,255,.08);color:rgba(255,255,255,.88);font-family:var(--font-cond);font-size:1.1rem;font-weight:700;letter-spacing:.07em;border:2px solid rgba(255,255,255,.28);border-radius:var(--radius-md);cursor:pointer;transition:all .28s var(--ease-spring);backdrop-filter:blur(6px);}
+.cta-ghost:hover{border-color:rgba(255,255,255,.75);color:#fff;transform:translateY(-3px);background:rgba(255,255,255,.14);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.hero-stats{display:flex;align-items:center;gap:1.5rem;position:relative;z-index:2;}
+.hs-item{display:flex;flex-direction:column;align-items:center;gap:.08rem;}
+.hs-n{font-family:var(--font-display);font-size:2.6rem;line-height:1;color:var(--gold-mid);text-shadow:0 0 24px rgba(255,190,0,.6);}
+.hs-l{font-size:.72rem;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.45);text-transform:uppercase;}
+.hs-sep{width:1px;height:44px;background:rgba(255,255,255,.15);}
+.hero-right{display:flex;align-items:center;justify-content:center;position:relative;z-index:2;}
+.trophy-scene{position:relative;width:360px;height:360px;display:flex;align-items:center;justify-content:center;}
+.trophy-glow{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,190,0,.45) 0%,rgba(255,100,0,.15) 50%,transparent 70%);animation:glowPulse 2.5s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.25);opacity:1;}}
+.trophy-main{font-size:7rem;position:relative;z-index:3;animation:trophyFloat 3.5s ease-in-out infinite;filter:drop-shadow(0 20px 40px rgba(0,0,0,.45)) drop-shadow(0 0 30px rgba(255,190,0,.6));}
+@keyframes trophyFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-16px) scale(1.04);}}
+.orbit{position:absolute;border-radius:50%;border:1.5px dashed rgba(255,255,255,.15);display:flex;align-items:flex-start;justify-content:center;animation:orbitSpin linear infinite;}
+.o1{width:170px;height:170px;animation-duration:9s;}.o2{width:250px;height:250px;animation-duration:16s;animation-direction:reverse;}.o3{width:335px;height:335px;animation-duration:24s;}
+.orb-item{font-size:1.5rem;margin-top:-13px;animation:orbitCounter linear infinite;filter:drop-shadow(0 3px 8px rgba(0,0,0,.5));}
+.o1 .orb-item{animation-duration:9s;}.o2 .orb-item{animation-duration:16s;animation-direction:reverse;}.o3 .orb-item{animation-duration:24s;}
+@keyframes orbitSpin{to{transform:rotate(360deg);}}
+@keyframes orbitCounter{to{transform:rotate(-360deg);}}
+.flags-ring{position:absolute;inset:0;pointer-events:none;}
+.flags-ring span{position:absolute;font-size:1.6rem;animation:flagFloat 4.5s ease-in-out infinite;animation-delay:var(--fd);filter:drop-shadow(0 3px 8px rgba(0,0,0,.55));}
+.flags-ring span:nth-child(1){top:2%;left:50%;transform:translateX(-50%);}
+.flags-ring span:nth-child(2){top:15%;right:2%;}
+.flags-ring span:nth-child(3){top:50%;right:-1%;transform:translateY(-50%);}
+.flags-ring span:nth-child(4){bottom:2%;right:15%;}
+.flags-ring span:nth-child(5){bottom:-1%;left:50%;transform:translateX(-50%);}
+.flags-ring span:nth-child(6){bottom:15%;left:2%;}
+.flags-ring span:nth-child(7){top:50%;left:-1%;transform:translateY(-50%);}
+.flags-ring span:nth-child(8){top:15%;left:2%;}
+@keyframes flagFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-10px) scale(1.12);}}
+.flags-ring span:nth-child(1){animation-name:flagFloat1;}
+.flags-ring span:nth-child(3){animation-name:flagFloat3;}
+.flags-ring span:nth-child(5){animation-name:flagFloat5;}
+.flags-ring span:nth-child(7){animation-name:flagFloat7;}
+@keyframes flagFloat1{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-10px);}}
+@keyframes flagFloat3{0%,100%{transform:translateY(-50%) translateX(0);}50%{transform:translateY(-50%) translateX(5px);}}
+@keyframes flagFloat5{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(10px);}}
+@keyframes flagFloat7{0%,100%{transform:translateY(-50%) translateX(0);}50%{transform:translateY(-50%) translateX(-5px);}}
+.flags-ring span:nth-child(odd){animation-direction:alternate-reverse;}
+
+/* SECTION HEADER */
+.section-head{display:flex;align-items:center;gap:1rem;margin-bottom:1.6rem;}
+.section-h2{font-family:var(--font-display);font-size:2rem;letter-spacing:.08em;color:var(--text);white-space:nowrap;}
+.sh-line{flex:1;height:3px;background:linear-gradient(90deg,var(--blue) 0%,var(--blue-light) 40%,transparent 100%);border-radius:3px;}
+.sh-btn{padding:.45rem 1.1rem;background:var(--blue-pale);color:var(--blue);font-family:var(--font-cond);font-size:.88rem;font-weight:800;letter-spacing:.05em;border:2px solid rgba(18,83,204,.22);border-radius:30px;cursor:pointer;transition:all .22s var(--ease-spring);white-space:nowrap;}
+.sh-btn:hover{background:var(--blue);color:#fff;transform:translateY(-2px);box-shadow:var(--sh-sm);}
+
+/* GROUPS GRID */
+.groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:1.4rem;margin-bottom:2.5rem;}
+.group-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:all .35s var(--ease-spring);box-shadow:var(--sh-sm);position:relative;}
+.group-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(18,83,204,.04) 0%,transparent 70%);pointer-events:none;opacity:0;transition:opacity .3s;}
+.group-card:hover{transform:translateY(-8px) scale(1.018);box-shadow:var(--sh-lg);border-color:var(--blue-light);}
+.group-card:hover::after{opacity:1;}
+.group-card-header{display:flex;align-items:center;gap:.8rem;padding:1.1rem 1.35rem;position:relative;}
+.group-card-header h3{font-family:var(--font-cond);font-size:1.2rem;font-weight:700;color:#fff;letter-spacing:.05em;flex:1;}
+.group-card[data-group="A"] .group-card-header{background:linear-gradient(135deg,#0A2E7A,#1253CC,#1E6AFF);}
+.group-card[data-group="B"] .group-card-header{background:linear-gradient(135deg,#00472A,#007A48,#2ECC8B);}
+.group-card[data-group="C"] .group-card-header{background:linear-gradient(135deg,#8B3A00,#C05A00,#FF9500);}
+.group-card[data-group="D"] .group-card-header{background:linear-gradient(135deg,#2E0E80,#6040E0,#9B70F0);}
+.group-letter{width:46px;height:46px;border-radius:var(--radius-sm);background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.38);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.6rem;color:#fff;flex-shrink:0;transition:transform .35s var(--ease-spring);text-shadow:0 2px 8px rgba(0,0,0,.3);}
+.group-card:hover .group-letter{transform:rotate(10deg) scale(1.12);}
+.group-card-teams{padding:.8rem 1.35rem 1rem;display:flex;flex-direction:column;gap:.2rem;}
+.group-team-item{display:flex;align-items:center;gap:.55rem;padding:.38rem 0;border-bottom:1px solid var(--border);font-size:.92rem;color:var(--text-mid);font-weight:600;transition:color .2s,padding-left .2s;}
+.group-team-item:last-child{border-bottom:none;}
+.group-card:hover .group-team-item{color:var(--text);padding-left:2px;}
+.team-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:transform .2s,background .2s;}
+.group-card[data-group="A"] .team-dot{background:var(--blue-light);}
+.group-card[data-group="B"] .team-dot{background:var(--green-light);}
+.group-card[data-group="C"] .team-dot{background:var(--gold);}
+.group-card[data-group="D"] .team-dot{background:#9B70F0;}
+.group-card:hover .team-dot{transform:scale(1.5);}
+.group-team-item.team-empty{color:var(--text-light);font-style:italic;font-weight:400;}
+.group-team-item.team-empty .team-dot{background:var(--border-mid)!important;}
+.group-card-btns{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:0 1.35rem 1.35rem;}
+.btn.btn-gold{padding:.52rem;font-family:var(--font-cond);font-size:.88rem;font-weight:800;letter-spacing:.04em;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all .25s var(--ease-spring);background:var(--grad-gold);color:#1a0a00;box-shadow:0 3px 10px rgba(255,149,0,.3);}
+.btn.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(255,149,0,.45);}
+.btn.btn-ghost{padding:.52rem;font-family:var(--font-cond);font-size:.88rem;font-weight:700;letter-spacing:.04em;border:2px solid var(--border-mid);border-radius:var(--radius-sm);cursor:pointer;transition:all .25s var(--ease-spring);background:var(--off);color:var(--text-mid);}
+.btn.btn-ghost:hover{background:var(--blue-pale);color:var(--blue);border-color:var(--blue-light);transform:translateY(-1px);}
+.rules-banner{display:flex;align-items:center;gap:1.4rem;padding:1.4rem 2rem;background:linear-gradient(135deg,#EAF2FF 0%,#EEF5FF 60%,#F5F0FF 100%);border:2px solid rgba(18,83,204,.18);border-radius:var(--radius-lg);box-shadow:var(--sh-sm);position:relative;overflow:hidden;}
+.rules-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-gold);}
+.rb-icon{font-size:2.2rem;flex-shrink:0;}
+.rb-content strong{display:block;font-family:var(--font-cond);font-size:1.05rem;font-weight:900;color:var(--text);letter-spacing:.05em;margin-bottom:.6rem;}
+.rb-pills{display:flex;gap:.5rem;flex-wrap:wrap;}
+.pill{padding:.32rem .85rem;border-radius:30px;font-family:var(--font-cond);font-size:.85rem;font-weight:800;letter-spacing:.05em;transition:transform .2s var(--ease-spring);}
+.pill:hover{transform:scale(1.05);}
+.pill.win{background:var(--green-pale);color:var(--green);border:1.5px solid rgba(0,122,72,.25);}
+.pill.draw{background:var(--gold-pale);color:#C07000;border:1.5px solid rgba(255,149,0,.3);}
+.pill.lose{background:var(--red-pale);color:var(--red);border:1.5px solid rgba(224,34,10,.25);}
+
+/* SETUP */
+.setup-info-banner{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;background:linear-gradient(135deg,#EAF2FF,#F0F7FF);border:2px solid rgba(18,83,204,.18);border-radius:var(--radius-md);margin-bottom:1.75rem;box-shadow:var(--sh-xs);}
+.sib-icon{font-size:1.5rem;flex-shrink:0;}
+.setup-info-banner strong{color:var(--blue);}
+.setup-info-banner div{font-size:.92rem;color:var(--text-mid);line-height:1.5;}
+.setup-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.4rem;margin-bottom:2rem;}
+.setup-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh-sm);transition:border-color .22s,box-shadow .22s,transform .22s var(--ease-spring);}
+.setup-card:hover{border-color:var(--blue-light);box-shadow:var(--sh-md);transform:translateY(-3px);}
+.sc-header{display:flex;align-items:center;gap:.8rem;padding:1.05rem 1.3rem;}
+.sc-a{background:linear-gradient(135deg,#0A2E7A,#1E6AFF);}.sc-b{background:linear-gradient(135deg,#00472A,#2ECC8B);}.sc-c{background:linear-gradient(135deg,#8B3A00,#FF9500);}.sc-d{background:linear-gradient(135deg,#2E0E80,#9B70F0);}
+.sc-letter{width:40px;height:40px;border-radius:var(--radius-sm);background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.42);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.5rem;color:#fff;}
+.sc-title{font-family:var(--font-cond);font-size:1.1rem;font-weight:800;color:#fff;flex:1;letter-spacing:.05em;}
+.sc-match-count{font-family:var(--font-cond);font-size:.78rem;font-weight:700;background:rgba(255,255,255,.2);padding:.15rem .6rem;border-radius:12px;color:rgba(255,255,255,.9);margin-left:auto;white-space:nowrap;}
+.sc-ball{font-size:1.3rem;animation:ballSpin 5s linear infinite;}
+@keyframes ballSpin{to{transform:rotate(360deg);}}
+.sc-body{padding:1.1rem 1.3rem 1.4rem;display:flex;flex-direction:column;gap:.65rem;}
+.ti-row{display:flex;align-items:center;gap:.65rem;}
+.ti-no{width:28px;height:28px;flex-shrink:0;border-radius:7px;background:var(--blue-pale);color:var(--blue);font-family:var(--font-cond);font-size:.88rem;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.ti,.team-name-input{flex:1;padding:.6rem .9rem;background:var(--off);border:2px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font-body);font-size:.92rem;font-weight:600;transition:all .22s var(--ease-smooth);outline:none;}
+.ti::placeholder,.team-name-input::placeholder{color:var(--text-light);font-weight:400;}
+.ti:focus,.team-name-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(18,83,204,.14);transform:scale(1.01);}
+.setup-actions{display:flex;gap:.85rem;flex-wrap:wrap;align-items:center;}
+.sc-footer{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.3rem 1rem;border-top:1px solid var(--border);gap:.75rem;flex-wrap:wrap;}
+.sc-add-btn{padding:.42rem 1rem;background:var(--green-pale);color:var(--green);border:1.5px solid rgba(0,122,72,.25);border-radius:20px;font-family:var(--font-cond);font-size:.85rem;font-weight:800;letter-spacing:.04em;cursor:pointer;transition:all .22s var(--ease-spring);white-space:nowrap;}
+.sc-add-btn:hover{background:var(--green);color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,122,72,.3);}
+.sc-add-btn.disabled{opacity:.45;cursor:not-allowed;}
+.sc-hint{font-family:var(--font-cond);font-size:.75rem;color:var(--text-light);font-weight:600;letter-spacing:.04em;}
+.sc-remove-btn{width:24px;height:24px;flex-shrink:0;border:none;background:var(--red-pale);color:var(--red);border-radius:6px;cursor:pointer;font-size:.78rem;font-weight:900;display:flex;align-items:center;justify-content:center;transition:all .2s var(--ease-spring);margin-left:.2rem;}
+.sc-remove-btn:hover{background:var(--red);color:#fff;transform:scale(1.15);}
+.sc-remove-placeholder{width:24px;flex-shrink:0;display:inline-block;}
+
+/* BUTTONS */
+.btn-save,.btn-primary{padding:.78rem 1.9rem;background:var(--grad-blue);color:#fff;font-family:var(--font-cond);font-size:1.05rem;font-weight:900;letter-spacing:.07em;border:none;border-radius:var(--radius-md);cursor:pointer;box-shadow:0 5px 18px rgba(18,83,204,.4);transition:all .25s var(--ease-spring);position:relative;overflow:hidden;}
+.btn-save::before,.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 100%);pointer-events:none;}
+.btn-save:hover,.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(18,83,204,.5);}
+.btn-reset-soft{padding:.78rem 1.9rem;background:var(--off);color:var(--text-mid);font-family:var(--font-cond);font-size:1.05rem;font-weight:700;letter-spacing:.05em;border:2px solid var(--border-mid);border-radius:var(--radius-md);cursor:pointer;transition:all .25s var(--ease-spring);}
+.btn-reset-soft:hover{background:var(--blue-pale);color:var(--blue);border-color:var(--blue-light);transform:translateY(-2px);box-shadow:var(--sh-sm);}
+.btn-danger{padding:.78rem 1.6rem;background:linear-gradient(135deg,#C01500,#E0220A,#FF4D2E);color:#fff;font-family:var(--font-cond);font-size:1.05rem;font-weight:900;letter-spacing:.07em;border:none;border-radius:var(--radius-md);cursor:pointer;box-shadow:0 5px 16px rgba(224,34,10,.3);transition:all .25s var(--ease-spring);}
+.btn-danger:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(224,34,10,.45);}
+.mt-1{margin-top:1rem;}
+.toast{display:inline-flex;align-items:center;gap:.55rem;padding:.7rem 1.4rem;background:linear-gradient(135deg,#D6F5E9,#E8FFF4);border:2px solid rgba(0,160,92,.35);border-radius:var(--radius-md);color:var(--green);font-family:var(--font-cond);font-size:1rem;font-weight:800;box-shadow:var(--sh-sm);animation:toastIn .35s var(--ease-spring);}
+.toast.hidden{display:none;}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px) scale(.93);}to{opacity:1;transform:none;}}
+
+/* TAB BAR */
+.tab-bar{display:flex;gap:.35rem;background:rgba(255,255,255,.8);border:2px solid var(--border);border-radius:var(--radius-md);padding:.35rem;margin-bottom:2rem;width:fit-content;box-shadow:var(--sh-xs);backdrop-filter:blur(8px);}
+.tab-btn{padding:.55rem 1.35rem;border:none;background:transparent;color:var(--text-muted);font-family:var(--font-cond);font-size:.95rem;font-weight:800;letter-spacing:.07em;border-radius:var(--radius-sm);cursor:pointer;transition:all .25s var(--ease-spring);white-space:nowrap;}
+.tab-btn:hover{background:var(--blue-pale);color:var(--blue);transform:translateY(-1px);}
+.tab-btn.active{background:var(--grad-blue);color:#fff;box-shadow:0 4px 12px rgba(18,83,204,.35);}
+
+/* MATCHES */
+.matches-list{display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem;}
+.match-row{display:flex;align-items:center;gap:1rem;padding:1rem 1.4rem;background:var(--card);border:2px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--sh-xs);transition:all .25s var(--ease-spring);position:relative;overflow:hidden;}
+.match-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--blue),var(--teal));opacity:0;transition:opacity .25s;border-radius:5px 0 0 5px;}
+.match-row:hover{border-color:var(--blue-light);box-shadow:var(--sh-md);transform:translateX(4px);}
+.match-row:hover::before{opacity:1;}
+.match-row.has-result{border-color:rgba(0,160,92,.4);background:#F5FFFB;}
+.match-row.has-result::before{background:linear-gradient(180deg,var(--green),var(--green-light));opacity:1;}
+.match-team{flex:1;font-family:var(--font-cond);font-size:1.05rem;font-weight:800;color:var(--text);letter-spacing:.02em;}
+.match-team.right{text-align:right;}
+.match-inputs{display:flex;align-items:center;gap:.45rem;}
+.match-inputs input{width:58px;padding:.5rem .3rem;text-align:center;background:var(--off);border:2px solid var(--border);border-radius:var(--radius-sm);color:var(--blue);font-family:var(--font-display);font-size:1.65rem;line-height:1;outline:none;transition:all .22s var(--ease-smooth);-moz-appearance:textfield;}
+.match-inputs input::-webkit-inner-spin-button,.match-inputs input::-webkit-outer-spin-button{-webkit-appearance:none;}
+.match-inputs input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(18,83,204,.14);transform:scale(1.05);}
+.match-inputs input:not(:placeholder-shown){border-color:var(--green);color:var(--green);background:#F0FFF7;}
+.score-dash{font-family:var(--font-display);font-size:1.4rem;color:var(--text-muted);user-select:none;}
+.page-actions{display:flex;gap:.85rem;flex-wrap:wrap;align-items:center;}
+.match-round-header{padding:.55rem 1rem;background:linear-gradient(135deg,var(--blue-pale),#EEF4FF);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font-cond);font-size:.88rem;font-weight:900;color:var(--blue);letter-spacing:.06em;margin-bottom:.4rem;margin-top:.8rem;}
+.match-round-header:first-child{margin-top:0;}
+.matches-empty{padding:3rem 1.5rem;text-align:center;border:2px dashed var(--border);border-radius:var(--radius-lg);}
+.me-icon{font-size:3rem;margin-bottom:.5rem;}
+.me-title{font-family:var(--font-cond);font-size:1.2rem;font-weight:800;color:var(--text-mid);margin-bottom:.3rem;}
+.me-sub{font-size:.9rem;color:var(--text-muted);}
+.me-sub strong{color:var(--blue);}
+
+/* STANDINGS */
+.advancing-teams{display:flex;gap:1.1rem;flex-wrap:wrap;margin-bottom:1.8rem;}
+.advance-card{flex:1;min-width:230px;display:flex;align-items:center;gap:1.1rem;padding:1.2rem 1.6rem;border-radius:var(--radius-lg);animation:advIn .5s var(--ease-spring) both;box-shadow:var(--sh-md);position:relative;overflow:hidden;}
+.advance-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+.advance-card.first::before{background:var(--grad-gold);}
+.advance-card.second::before{background:linear-gradient(90deg,#9AAABB,#C8D8E8);}
+@keyframes advIn{from{opacity:0;transform:scale(.88) translateY(12px);}to{opacity:1;transform:none;}}
+.advance-card.first{background:linear-gradient(135deg,#FFFDE7,#FFF3C0,#FFEEA0);border:2px solid rgba(255,190,0,.5);}
+.advance-card.second{background:linear-gradient(135deg,#F5F7FA,#EEF2F8);border:2px solid rgba(168,188,214,.45);}
+.advance-icon{font-size:2.2rem;flex-shrink:0;}
+.advance-label{font-family:var(--font-cond);font-size:.72rem;font-weight:800;letter-spacing:.14em;color:var(--text-muted);text-transform:uppercase;}
+.advance-team{font-family:var(--font-display);font-size:1.5rem;letter-spacing:.05em;}
+.advance-card.first .advance-team{color:#B07800;}
+.advance-card.second .advance-team{color:#5A6A8A;}
+.table-wrap{overflow-x:auto;border-radius:var(--radius-lg);border:2px solid var(--border);box-shadow:var(--sh-md);margin-bottom:1.1rem;}
+.std-table{width:100%;border-collapse:collapse;background:var(--card);font-size:.96rem;}
+.std-table thead tr{background:var(--grad-blue);}
+.std-table th{padding:.92rem 1.1rem;color:rgba(255,255,255,.92);font-family:var(--font-cond);font-size:.82rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;text-align:left;white-space:nowrap;border:none;}
+.std-table th:nth-child(n+3){text-align:center;}
+.std-table td{padding:.85rem 1.1rem;border-bottom:1px solid var(--border);color:var(--text-mid);font-weight:600;}
+.std-table td:nth-child(n+3){text-align:center;}
+.std-table tbody tr{transition:background .18s;}
+.std-table tbody tr:hover{background:var(--sky);}
+.std-table tbody tr:last-child td{border-bottom:none;}
+.std-table tbody tr.rank-1{background:linear-gradient(90deg,#FFFCDE 0%,#FFF9E3 30%,transparent 100%);}
+.std-table tbody tr.rank-1 td{color:var(--text);}
+.std-table tbody tr.rank-1:hover{background:linear-gradient(90deg,#FFF7B8 0%,#FFF7B8 30%,var(--sky) 100%);}
+.std-table tbody tr.rank-2{background:linear-gradient(90deg,#F0F4FA 0%,#F5F8FB 30%,transparent 100%);}
+.rank-badge{width:32px;height:32px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.15rem;}
+.r1{background:linear-gradient(135deg,#A06B00,#FFD700);color:#fff;box-shadow:0 3px 10px rgba(255,215,0,.45);}
+.r2{background:linear-gradient(135deg,#6A7A8A,#B8C8D8);color:#fff;}
+.r3{background:var(--off);color:var(--text-muted);border:2px solid var(--border-mid);}
+.r4{background:var(--red-pale);color:var(--red);border:2px solid rgba(224,34,10,.22);}
+.r5{background:linear-gradient(135deg,#FF6B00,#FF9500);color:#fff;}
+.r6{background:var(--off);color:var(--text-muted);border:2px solid var(--border-mid);}
+.team-cell{display:flex;align-items:center;gap:.65rem;}
+.team-flag{width:32px;height:24px;border-radius:5px;background:linear-gradient(135deg,var(--blue-pale),#D8E8F8);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;}
+.gd-positive{color:var(--green-mid)!important;font-weight:800;}
+.gd-negative{color:var(--red)!important;font-weight:800;}
+.pts-cell{font-family:var(--font-display);font-size:1.5rem;color:var(--blue)!important;}
+.std-table tbody tr.rank-1 .pts-cell{color:#B07800!important;}
+.std-legend{display:flex;gap:1.2rem;flex-wrap:wrap;padding:.75rem 0;}
+.leg{font-family:var(--font-cond);font-size:.84rem;font-weight:800;color:var(--text-muted);}
+.leg-gold{color:#B07800;}.leg-silver{color:#6A7A8A;}
+.std-empty{padding:2.5rem 1rem;text-align:center;color:var(--text-muted);font-style:italic;font-size:.95rem;}
+.group-meta{font-family:var(--font-cond);font-size:.75rem;font-weight:700;color:rgba(255,255,255,.7);margin-left:auto;letter-spacing:.04em;}
+
+/* FOOTER */
+.footer{background:linear-gradient(135deg,#060F2E 0%,#0A2E7A 60%,#1253CC 100%);border-top:4px solid transparent;border-image:var(--grad-gold) 1;padding:1.1rem 0;position:relative;z-index:1;}
+.ft-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+.ft-brand{font-family:var(--font-display);font-size:1.15rem;letter-spacing:.1em;color:var(--gold-mid);}
+.ft-rule{font-family:var(--font-cond);font-size:.82rem;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.07em;}
+.ft-save{font-family:var(--font-cond);font-size:.82rem;font-weight:700;color:rgba(0,255,140,.65);letter-spacing:.05em;}
+
+/* CONFETTI */
+.confetti-overlay{position:fixed;inset:0;z-index:999;pointer-events:none;}
+.confetti-piece{position:absolute;animation:cpFall linear forwards;border-radius:2px;}
+@keyframes cpFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(105vh) rotate(900deg);opacity:0;}}
+
+/* SAVE / SYNC INDICATOR */
+.save-indicator{position:fixed;bottom:1.75rem;right:1.75rem;z-index:500;display:flex;align-items:center;gap:.55rem;padding:.7rem 1.3rem;background:linear-gradient(135deg,var(--green),var(--green-mid));color:#fff;font-family:var(--font-cond);font-size:.95rem;font-weight:800;letter-spacing:.06em;border-radius:30px;box-shadow:0 8px 24px rgba(0,122,72,.45);animation:siIn .35s var(--ease-spring);}
+.save-indicator.hidden{display:none;}
+@keyframes siIn{from{opacity:0;transform:translateY(14px) scale(.88);}to{opacity:1;transform:none;}}
+.sync-banner{position:fixed;bottom:1.75rem;left:50%;transform:translateX(-50%);z-index:500;display:flex;align-items:center;gap:.6rem;padding:.65rem 1.4rem;background:linear-gradient(135deg,#1253CC,#1E6AFF);color:#fff;font-family:var(--font-cond);font-size:.9rem;font-weight:800;letter-spacing:.06em;border-radius:30px;box-shadow:0 8px 24px rgba(18,83,204,.5);animation:siIn .35s var(--ease-spring);white-space:nowrap;}
+.sync-banner.hidden{display:none;}
+
+/* DRAW PAGE */
+.draw-info-banner{display:flex;align-items:flex-start;gap:.75rem;padding:.9rem 1.25rem;background:linear-gradient(135deg,rgba(18,83,204,.08),rgba(96,64,224,.06));border:1.5px solid rgba(18,83,204,.18);border-radius:var(--radius-md);margin-bottom:1.25rem;font-size:.9rem;color:var(--text-mid);line-height:1.5;}
+.draw-info-banner span:first-child{font-size:1.2rem;flex-shrink:0;margin-top:.05rem;}
+.draw-info-banner strong{color:var(--blue);}
+.draw-add-row{display:flex;gap:.85rem;align-items:center;margin-bottom:2rem;padding:1.2rem 1.5rem;background:var(--card);border:2px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--sh-sm);flex-wrap:wrap;}
+.draw-input-wrap{flex:1;min-width:220px;position:relative;display:flex;align-items:center;}
+.draw-input-ico{position:absolute;left:.85rem;font-size:1.1rem;pointer-events:none;animation:ballSpin 5s linear infinite;}
+.draw-input{width:100%;padding:.7rem .9rem .7rem 2.4rem;background:var(--off);border:2px solid var(--border);border-radius:var(--radius-md);font-family:var(--font-body);font-size:1rem;font-weight:600;color:var(--text);outline:none;transition:all .22s var(--ease-smooth);}
+.draw-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(18,83,204,.14);}
+.draw-input.shake{animation:inputShake .35s;}
+@keyframes inputShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.btn-draw-add{padding:.72rem 1.6rem;background:var(--grad-green);color:#fff;font-family:var(--font-cond);font-size:1rem;font-weight:900;letter-spacing:.07em;border:none;border-radius:var(--radius-md);cursor:pointer;box-shadow:0 5px 16px rgba(0,122,72,.35);transition:all .25s var(--ease-spring);white-space:nowrap;}
+.btn-draw-add:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,122,72,.45);}
+.draw-layout{display:grid;grid-template-columns:400px 1fr;gap:2rem;align-items:start;margin-bottom:2rem;}
+.draw-wheel-col{display:flex;flex-direction:column;align-items:center;gap:1.2rem;position:sticky;top:90px;}
+.wheel-wrapper{position:relative;width:376px;height:376px;display:flex;align-items:center;justify-content:center;}
+.wheel-wrapper::before{content:'';position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 0deg,#1253CC,#FF9500,#007A48,#6040E0,#FF3085,#1253CC);animation:wheelRingRotate 8s linear infinite;filter:blur(2px);opacity:.5;z-index:0;}
+.wheel-wrapper::after{content:'';position:absolute;inset:-4px;border-radius:50%;background:var(--off);z-index:1;}
+@keyframes wheelRingRotate{to{transform:rotate(360deg);}}
+#wheel-canvas{position:relative;z-index:2;border-radius:50%;filter:drop-shadow(0 12px 32px rgba(0,0,0,.35));cursor:pointer;transition:filter .2s;}
+#wheel-canvas:hover{filter:drop-shadow(0 16px 40px rgba(18,83,204,.4));}
+.wheel-pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);z-index:10;font-size:2rem;line-height:1;color:var(--gold-bright);filter:drop-shadow(0 2px 8px rgba(0,0,0,.6));animation:pointerBounce 1.5s ease-in-out infinite;}
+@keyframes pointerBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(4px)}}
+.draw-group-tabs{display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.85);border:2px solid var(--border);border-radius:var(--radius-md);padding:.4rem .6rem;box-shadow:var(--sh-xs);backdrop-filter:blur(8px);}
+.dgt-label{font-family:var(--font-cond);font-size:.82rem;font-weight:700;color:var(--text-muted);letter-spacing:.06em;white-space:nowrap;margin-right:.2rem;}
+.draw-group-tab{width:38px;height:38px;border:2px solid var(--border);background:var(--off);color:var(--text-mid);font-family:var(--font-display);font-size:1.1rem;border-radius:var(--radius-sm);cursor:pointer;transition:all .22s var(--ease-spring);display:flex;align-items:center;justify-content:center;}
+.draw-group-tab:hover{border-color:var(--blue-light);background:var(--blue-pale);color:var(--blue);transform:translateY(-2px);}
+.draw-group-tab.active{background:var(--grad-blue);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(18,83,204,.4);transform:translateY(-1px);}
+.btn-spin{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:1rem 2rem;background:var(--grad-gold);color:#1a0800;font-family:var(--font-cond);font-size:1.2rem;font-weight:900;letter-spacing:.1em;border:none;border-radius:var(--radius-lg);cursor:pointer;box-shadow:var(--sh-gold),0 2px 0 rgba(255,255,255,.25) inset;transition:all .28s var(--ease-spring);position:relative;overflow:hidden;}
+.btn-spin::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,transparent 60%);pointer-events:none;}
+.spin-icon{font-size:1.4rem;transition:transform .4s;}
+.btn-spin:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 16px 40px rgba(255,149,0,.65);}
+.btn-spin.spinning{background:linear-gradient(135deg,#6040E0,#8B5CF6);cursor:not-allowed;animation:spinPulse .8s ease-in-out infinite;}
+.btn-spin.spinning .spin-icon{animation:spinIcon .6s linear infinite;}
+@keyframes spinPulse{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes spinIcon{to{transform:rotate(360deg);}}
+.draw-right-col{display:flex;flex-direction:column;}
+.draw-section-head{display:flex;align-items:center;gap:.6rem;padding:.5rem 0 .75rem;border-bottom:2px solid var(--border);margin-bottom:1rem;}
+.dsh-icon{font-size:1.2rem;}
+.draw-section-head strong{font-family:var(--font-cond);font-size:1.1rem;font-weight:900;letter-spacing:.04em;color:var(--text);}
+.dsh-count{margin-left:auto;font-family:var(--font-cond);font-size:.85rem;font-weight:700;color:var(--text-muted);}
+.draw-team-list{display:flex;flex-direction:column;gap:.45rem;max-height:260px;overflow-y:auto;padding-right:4px;scrollbar-width:thin;scrollbar-color:var(--border-mid) transparent;}
+.draw-team-list::-webkit-scrollbar{width:5px;}
+.draw-team-list::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:5px;}
+.draw-empty-hint{padding:1.5rem 1rem;text-align:center;color:var(--text-muted);font-size:.9rem;font-style:italic;border:2px dashed var(--border);border-radius:var(--radius-md);}
+.draw-team-chip{display:flex;align-items:center;gap:.6rem;padding:.5rem .85rem;background:var(--card);border:2px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--sh-xs);transition:all .2s var(--ease-spring);animation:chipIn .3s var(--ease-spring) both;}
+@keyframes chipIn{from{opacity:0;transform:translateX(-10px) scale(.95)}to{opacity:1;transform:none}}
+.draw-team-chip:hover{border-color:var(--blue-light);transform:translateX(3px);}
+.dtc-num{width:22px;height:22px;flex-shrink:0;border-radius:5px;background:var(--blue-pale);color:var(--blue);font-family:var(--font-cond);font-size:.8rem;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.dtc-name{flex:1;font-family:var(--font-cond);font-size:.95rem;font-weight:700;color:var(--text);}
+.dtc-badge{padding:.18rem .6rem;border-radius:20px;font-family:var(--font-cond);font-size:.72rem;font-weight:800;letter-spacing:.06em;white-space:nowrap;}
+.dtc-pending{background:var(--gold-pale);color:#A06000;border:1px solid rgba(255,149,0,.3);}
+.dtc-badge.grp-A{background:#E0EAFF;color:#1253CC;border:1px solid rgba(18,83,204,.2);}
+.dtc-badge.grp-B{background:var(--green-pale);color:var(--green);border:1px solid rgba(0,122,72,.2);}
+.dtc-badge.grp-C{background:var(--gold-pale);color:#A06000;border:1px solid rgba(255,149,0,.25);}
+.dtc-badge.grp-D{background:#EDE9FF;color:#6040E0;border:1px solid rgba(96,64,224,.2);}
+.dtc-remove{width:22px;height:22px;border:none;background:var(--red-pale);color:var(--red);border-radius:5px;cursor:pointer;font-size:.75rem;font-weight:900;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s var(--ease-spring);}
+.dtc-remove:hover{background:var(--red);color:#fff;transform:scale(1.15);}
+.draw-groups-result{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.draw-group-box{border:2px solid var(--border);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--sh-xs);transition:border-color .2s,transform .2s var(--ease-spring);}
+.draw-group-box:hover{transform:translateY(-2px);box-shadow:var(--sh-sm);}
+.dgb-header{display:flex;align-items:center;justify-content:space-between;padding:.55rem .9rem;font-family:var(--font-cond);font-size:.92rem;font-weight:800;color:#fff;letter-spacing:.06em;}
+.dgb-a{background:linear-gradient(135deg,#0A2E7A,#1E6AFF);}.dgb-b{background:linear-gradient(135deg,#00472A,#2ECC8B);}.dgb-c{background:linear-gradient(135deg,#8B3A00,#FF9500);}.dgb-d{background:linear-gradient(135deg,#2E0E80,#9B70F0);}
+.dgb-count{font-family:var(--font-cond);font-size:.78rem;font-weight:700;background:rgba(255,255,255,.22);padding:.1rem .5rem;border-radius:12px;transition:background .3s,color .3s;}
+.dgb-count.has-teams{background:rgba(0,255,140,.32);color:#fff;}
+.dgb-slots{padding:.5rem .9rem .65rem;display:flex;flex-direction:column;gap:.3rem;min-height:60px;}
+.draw-slot-empty{font-style:italic;color:var(--text-light);font-size:.82rem;}
+.draw-slot-team{font-family:var(--font-cond);font-size:.9rem;font-weight:700;color:var(--text);padding:.2rem 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.4rem;}
+.draw-slot-team::before{content:'⚽';font-size:.7rem;}
+.draw-slot-team:last-child{border-bottom:none;}
+.draw-actions{display:flex;gap:.85rem;flex-wrap:wrap;margin-top:.5rem;}
+.spin-result-overlay{position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;background:rgba(6,15,46,.65);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s;}
+.spin-result-overlay.visible{opacity:1;pointer-events:auto;}
+.sro-inner{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;justify-content:center;padding:2.5rem 3.5rem;background:linear-gradient(145deg,#0D1F5C,#1253CC);border-radius:var(--radius-2xl);border:2px solid rgba(255,190,0,.5);box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);animation:sroIn .45s var(--ease-spring);}
+@keyframes sroIn{from{transform:scale(.7) translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.sro-ball{font-size:3.5rem;animation:sroBounce 1s ease-in-out infinite;}
+@keyframes sroBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.sro-label{font-family:var(--font-cond);font-size:.8rem;font-weight:900;letter-spacing:.2em;color:rgba(255,255,255,.55);text-transform:uppercase;text-align:center;}
+.sro-name{font-family:var(--font-display);font-size:2.8rem;letter-spacing:.06em;color:var(--gold-bright);text-align:center;filter:drop-shadow(0 0 20px rgba(255,190,0,.6));}
+.sro-arrow{font-size:2rem;color:rgba(255,255,255,.4);}
+.sro-group{font-family:var(--font-display);font-size:2.2rem;letter-spacing:.08em;color:#fff;text-align:center;}
+
+/* RESPONSIVE */
+@media(max-width:920px){.hero{grid-template-columns:1fr;gap:2rem;}.hero-right{display:none;}}
+@media(max-width:660px){.hd-inner{flex-direction:column;align-items:stretch;gap:.5rem;}.nav{justify-content:center;}.nb-lbl{display:none;}.nav-btn{padding:.5rem .8rem;}.hero{padding:2rem 1.5rem;border-radius:var(--radius-xl);}.hero-h1{font-size:3rem;}.hero-ctas{flex-direction:column;}.cta-primary,.cta-ghost{width:100%;text-align:center;}.tab-bar{width:100%;}.tab-btn{flex:1;font-size:.8rem;padding:.48rem .35rem;}.match-row{flex-wrap:wrap;gap:.55rem;}.match-team{font-size:.9rem;min-width:80px;}.std-table{font-size:.83rem;}.std-table th,.std-table td{padding:.6rem .55rem;}.groups-grid{grid-template-columns:1fr 1fr;}.page-actions,.setup-actions{flex-direction:column;}.page-actions>*,.setup-actions>*{width:100%;text-align:center;}.rules-banner{flex-direction:column;text-align:center;}.rb-pills{justify-content:center;}.ft-inner{flex-direction:column;text-align:center;gap:.3rem;}.advance-card{min-width:100%;}}
+@media(max-width:440px){.groups-grid{grid-template-columns:1fr;}}
+@media(max-width:900px){.draw-layout{grid-template-columns:1fr;}.draw-wheel-col{position:static;}.wheel-wrapper{width:300px;height:300px;}#wheel-canvas{width:300px!important;height:300px!important;}.draw-groups-result{grid-template-columns:1fr 1fr;}}
+@media(max-width:500px){.draw-groups-result{grid-template-columns:1fr;}.sro-inner{padding:2rem 1.5rem;}.sro-name{font-size:2rem;}}
+</style>
+  </head>
+  <body>
+
+    <div class="bg-layer" aria-hidden="true">
+      <div class="bg-pitch"></div>
+      <div class="bg-glow g1"></div>
+      <div class="bg-glow g2"></div>
+      <div class="bg-glow g3"></div>
+      <div class="particles" id="particles"></div>
+    </div>
+
+    <header class="header">
+      <div class="container hd-inner">
+        <a class="brand" href="#" onclick="return false;" data-page="home">
+          <span class="brand-cup">🏆</span>
+          <span class="brand-text">
+            <strong>FOOTBALL</strong>
+            <em>Championship Manager</em>
+          </span>
+        </a>
+        <nav class="nav" role="navigation">
+          <button class="nav-btn active" data-page="home"><span
+              class="nb-ico">🏠</span><span class="nb-lbl">Trang
+              chủ</span></button>
+          <button class="nav-btn" data-page="setup"><span
+              class="nb-ico">⚙️</span><span class="nb-lbl">Thiết
+              lập</span></button>
+          <button class="nav-btn" data-page="results"><span
+              class="nb-ico">📋</span><span class="nb-lbl">Kết
+              quả</span></button>
+          <button class="nav-btn" data-page="standings"><span
+              class="nb-ico">📊</span><span class="nb-lbl">Xếp
+              hạng</span></button>
+          <button class="nav-btn" data-page="draw"><span
+              class="nb-ico">🎡</span><span class="nb-lbl">Bốc
+              thăm</span></button>
+        </nav>
+        <div class="live-badge" id="live-badge"><span
+            class="live-dot"></span><span id="live-label">LIVE SYNC</span></div>
       </div>
+    </header>
 
-      <div class="hero-right" aria-hidden="true">
-        <div class="trophy-scene">
-          <div class="trophy-glow"></div>
-          <div class="trophy-main">🏆</div>
-          <div class="orbit o1">
-            <div class="orb-item">⚽</div>
+    <main class="main">
+
+      <section id="page-home" class="page active">
+        <div class="container">
+          <div class="hero">
+            <div class="hero-glow-1" aria-hidden="true"></div>
+            <div class="hero-glow-2" aria-hidden="true"></div>
+            <div class="hero-left">
+              <div class="hero-eyebrow"><span class="pulse-dot"></span> FIFA
+                WORLD CUP HOANG LONG</div>
+              <h1 class="hero-h1">QUẢN LÝ<br><span class="shine-text">GIẢI
+                  ĐẤU</span><br>BÓNG ĐÁ</h1>
+              <p class="hero-sub">Theo dõi kết quả · <span>Xếp hạng thời gian
+                  thực</span> · Quy tắc FIFA chuẩn</p>
+              <div class="hero-ctas">
+                <button class="cta-primary" data-page="setup">⚙️ Thiết lập đội
+                  bóng</button>
+                <button class="cta-ghost" data-page="results">📋 Nhập kết quả
+                  ngay</button>
+              </div>
+              <div class="hero-stats">
+                <div class="hs-item"><span class="hs-n">4</span><span
+                    class="hs-l">Bảng đấu</span></div>
+                <div class="hs-sep"></div>
+                <div class="hs-item"><span class="hs-n">16</span><span
+                    class="hs-l">Đội tham gia</span></div>
+                <div class="hs-sep"></div>
+                <div class="hs-item"><span class="hs-n">24</span><span
+                    class="hs-l">Trận đấu</span></div>
+              </div>
+            </div>
+            <div class="hero-right" aria-hidden="true">
+              <div class="trophy-scene">
+                <div class="trophy-glow"></div>
+                <div class="trophy-main">🏆</div>
+                <div class="orbit o1"><div class="orb-item">⚽</div></div>
+                <div class="orbit o2"><div class="orb-item">⭐</div></div>
+                <div class="orbit o3"><div class="orb-item">🎯</div></div>
+                <div class="flags-ring">
+                  <span style="--fd:0s">🇧🇷</span><span
+                    style="--fd:.3s">🇩🇪</span><span
+                    style="--fd:.6s">🇫🇷</span><span
+                    style="--fd:.9s">🇦🇷</span>
+                  <span style="--fd:1.2s">🇪🇸</span><span
+                    style="--fd:1.5s">🇵🇹</span><span
+                    style="--fd:1.8s">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span
+                    style="--fd:2.1s">🇮🇹</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="orbit o2">
-            <div class="orb-item">⭐</div>
+          <div class="section-head">
+            <h2 class="section-h2">CÁC BẢNG ĐẤU</h2>
+            <div class="sh-line"></div>
+            <button class="sh-btn" data-page="standings">Xem tất cả →</button>
           </div>
-          <div class="orbit o3">
-            <div class="orb-item">🎯</div>
-          </div>
-          <div class="flags-ring">
-            <span style="--fd:0s">🇧🇷</span>
-            <span style="--fd:.3s">🇩🇪</span>
-            <span style="--fd:.6s">🇫🇷</span>
-            <span style="--fd:.9s">🇦🇷</span>
-            <span style="--fd:1.2s">🇪🇸</span>
-            <span style="--fd:1.5s">🇵🇹</span>
-            <span style="--fd:1.8s">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
-            <span style="--fd:2.1s">🇮🇹</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- GROUPS SECTION -->
-    <div class="section-head">
-      <h2 class="section-h2">CÁC BẢNG ĐẤU</h2>
-      <div class="sh-line"></div>
-      <button class="sh-btn" data-page="standings">Xem tất cả →</button>
-    </div>
-
-    <div class="groups-grid" id="home-groups-grid">
-      <!-- rendered by JS -->
-    </div>
-
-    <!-- FIFA RULES BANNER -->
-    <div class="rules-banner">
-      <div class="rb-icon">📋</div>
-      <div class="rb-content">
-        <strong>Quy tắc tính điểm FIFA</strong>
-        <div class="rb-pills">
-          <span class="pill win">🏆 Thắng = 3 điểm</span>
-          <span class="pill draw">🤝 Hoà = 1 điểm</span>
-          <span class="pill lose">❌ Thua = 0 điểm</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════
-     PAGE: SETUP
-════════════════════════════════════════ -->
-<section id="page-setup" class="page">
-  <div class="container">
-    <div class="page-hd">
-      <div class="page-hd-icon">⚙️</div>
-      <div>
-        <h2 class="page-title">Thiết lập giải đấu</h2>
-        <p class="page-sub">Đặt tên đội cho từng bảng — dữ liệu tự động lưu vào trình duyệt</p>
-      </div>
-    </div>
-
-    <!-- Info banner -->
-    <div class="setup-info-banner">
-      <span class="sib-icon">💡</span>
-      <div><strong>Mỗi bảng có thể có 2–6 đội</strong> — tất cả đội sẽ đá vòng tròn (round-robin). Nhập ít nhất 2 đội để bắt đầu.</div>
-    </div>
-
-    <!-- Dynamic setup grid rendered by JS -->
-    <div class="setup-grid" id="setup-grid"></div>
-
-    <div class="setup-actions">
-      <button class="btn-save" id="btn-save-setup">💾 Lưu & Tạo lịch đấu</button>
-      <button class="btn-reset-soft" id="btn-reset-setup">🔄 Đặt lại tất cả</button>
-    </div>
-    <div id="setup-toast" class="toast hidden">✅ Đã lưu! Lịch đấu vòng tròn đã được tạo.</div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════
-     PAGE: RESULTS
-════════════════════════════════════════ -->
-<section id="page-results" class="page">
-  <div class="container">
-    <div class="page-hd">
-      <div class="page-hd-icon">📋</div>
-      <div>
-        <h2 class="page-title">Nhập kết quả</h2>
-        <p class="page-sub">Kết quả tự động lưu vào trình duyệt ngay khi nhập — không mất dữ liệu khi thoát</p>
-      </div>
-    </div>
-
-    <div class="tab-bar" id="results-tabs">
-      <button class="tab-btn active" data-group="A">⚽ Bảng A</button>
-      <button class="tab-btn" data-group="B">⚽ Bảng B</button>
-      <button class="tab-btn" data-group="C">⚽ Bảng C</button>
-      <button class="tab-btn" data-group="D">⚽ Bảng D</button>
-    </div>
-
-    <div id="matches-list" class="matches-list"></div>
-
-    <div class="page-actions">
-      <button class="btn-primary" id="btn-save-results">✅ Lưu &amp; Xem xếp hạng</button>
-      <button class="btn-danger" id="btn-reset-group">🗑️ Reset bảng này</button>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════
-     PAGE: STANDINGS
-════════════════════════════════════════ -->
-<section id="page-standings" class="page">
-  <div class="container">
-    <div class="page-hd">
-      <div class="page-hd-icon">📊</div>
-      <div>
-        <h2 class="page-title">Bảng xếp hạng</h2>
-        <p class="page-sub">Thứ hạng theo chuẩn FIFA · Thắng 3đ · Hoà 1đ · Thua 0đ</p>
-      </div>
-    </div>
-
-    <div class="tab-bar" id="standings-tabs">
-      <button class="tab-btn active" data-group="A">📊 Bảng A</button>
-      <button class="tab-btn" data-group="B">📊 Bảng B</button>
-      <button class="tab-btn" data-group="C">📊 Bảng C</button>
-      <button class="tab-btn" data-group="D">📊 Bảng D</button>
-    </div>
-
-    <div id="advancing-teams" class="advancing-teams"></div>
-
-    <div class="table-wrap">
-      <table class="std-table" id="standings-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Đội bóng</th>
-            <th title="Trận đã đấu">TĐ</th>
-            <th title="Thắng">T</th>
-            <th title="Hoà">H</th>
-            <th title="Thua">B</th>
-            <th title="Bàn thắng">BT</th>
-            <th title="Bàn thua">BB</th>
-            <th title="Hiệu số">HS</th>
-            <th title="Điểm">Đ</th>
-          </tr>
-        </thead>
-        <tbody id="standings-body"></tbody>
-      </table>
-    </div>
-
-    <div class="std-legend">
-      <span class="leg leg-gold">🥇 Nhất bảng — vào vòng tiếp</span>
-      <span class="leg leg-silver">🥈 Nhì bảng — vào vòng tiếp</span>
-    </div>
-
-    <button class="btn-danger mt-1" id="btn-reset-standings">🗑️ Reset bảng này</button>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════
-     PAGE: DRAW
-════════════════════════════════════════ -->
-<section id="page-draw" class="page">
-  <div class="container">
-    <div class="page-hd">
-      <div class="page-hd-icon">🎡</div>
-      <div>
-        <h2 class="page-title">Bốc thăm chia bảng</h2>
-        <p class="page-sub">Thêm tên đội · Quay vòng ngẫu nhiên · Áp dụng kết quả vào giải đấu</p>
-      </div>
-    </div>
-
-    <!-- INFO BANNER -->
-    <div class="draw-info-banner">
-      <span>💡</span>
-      <div>Nhập tên đội → chọn <strong>Bảng đích</strong> → nhấn <strong>🎯 Quay</strong>. Mỗi bảng nhận <strong>bất kỳ số đội nào ≥ 2</strong> — lịch vòng tròn tự tạo đúng số thực tế.</div>
-    </div>
-
-    <!-- ADD TEAM ROW -->
-    <div class="draw-add-row">
-      <div class="draw-input-wrap">
-        <span class="draw-input-ico">⚽</span>
-        <input type="text" id="draw-team-input" class="draw-input" placeholder="Nhập tên đội bóng…" maxlength="30" autocomplete="off">
-      </div>
-      <button class="btn-draw-add" id="btn-draw-add">+ Thêm vào danh sách</button>
-    </div>
-
-    <!-- MAIN DRAW LAYOUT -->
-    <div class="draw-layout">
-
-      <!-- LEFT: Wheel + Controls -->
-      <div class="draw-wheel-col">
-        <div class="wheel-wrapper">
-          <!-- Pointer arrow -->
-          <div class="wheel-pointer">▼</div>
-          <canvas id="wheel-canvas" width="360" height="360"></canvas>
-        </div>
-
-        <!-- Group selector tabs -->
-        <div class="draw-group-tabs">
-          <span class="dgt-label">Đưa vào Bảng:</span>
-          <button class="draw-group-tab active" data-group="A">A</button>
-          <button class="draw-group-tab" data-group="B">B</button>
-          <button class="draw-group-tab" data-group="C">C</button>
-          <button class="draw-group-tab" data-group="D">D</button>
-        </div>
-
-        <button class="btn-spin" id="btn-spin">
-          <span class="spin-icon">🎯</span>
-          <span>QUAY BỐC THĂM</span>
-        </button>
-      </div>
-
-      <!-- RIGHT: Teams list + Group slots -->
-      <div class="draw-right-col">
-        <!-- Team list -->
-        <div class="draw-section-head">
-          <span class="dsh-icon">👥</span>
-          <strong>Danh sách đội</strong>
-          <span class="dsh-count" id="draw-total-count"></span>
-        </div>
-        <div class="draw-team-list" id="draw-team-list">
-          <div class="draw-empty-hint">✏️ Nhập tên đội bên trên rồi nhấn <strong>+ Thêm</strong></div>
-        </div>
-
-        <!-- Group result boxes -->
-        <div class="draw-section-head" style="margin-top:1.5rem">
-          <span class="dsh-icon">📋</span>
-          <strong>Kết quả phân bảng</strong>
-        </div>
-        <div class="draw-groups-result">
-          <div class="draw-group-box" data-group="A">
-            <div class="dgb-header dgb-a"><span>Bảng A</span><span class="dgb-count">0 đội</span></div>
-            <div class="dgb-slots" id="draw-slots-A"><span class="draw-slot-empty">— trống —</span></div>
-          </div>
-          <div class="draw-group-box" data-group="B">
-            <div class="dgb-header dgb-b"><span>Bảng B</span><span class="dgb-count">0 đội</span></div>
-            <div class="dgb-slots" id="draw-slots-B"><span class="draw-slot-empty">— trống —</span></div>
-          </div>
-          <div class="draw-group-box" data-group="C">
-            <div class="dgb-header dgb-c"><span>Bảng C</span><span class="dgb-count">0 đội</span></div>
-            <div class="dgb-slots" id="draw-slots-C"><span class="draw-slot-empty">— trống —</span></div>
-          </div>
-          <div class="draw-group-box" data-group="D">
-            <div class="dgb-header dgb-d"><span>Bảng D</span><span class="dgb-count">0 đội</span></div>
-            <div class="dgb-slots" id="draw-slots-D"><span class="draw-slot-empty">— trống —</span></div>
+          <div class="groups-grid" id="home-groups-grid"></div>
+          <div class="rules-banner">
+            <div class="rb-icon">📋</div>
+            <div class="rb-content">
+              <strong>Quy tắc tính điểm FIFA</strong>
+              <div class="rb-pills">
+                <span class="pill win">🏆 Thắng = 3 điểm</span>
+                <span class="pill draw">🤝 Hoà = 1 điểm</span>
+                <span class="pill lose">❌ Thua = 0 điểm</span>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
+
+      <section id="page-setup" class="page">
+        <div class="container">
+          <div class="page-hd">
+            <div class="page-hd-icon">⚙️</div>
+            <div>
+              <h2 class="page-title">Thiết lập giải đấu</h2>
+              <p class="page-sub">Đặt tên đội cho từng bảng — dữ liệu tự động
+                đồng bộ cho tất cả mọi người</p>
+            </div>
+          </div>
+          <div class="setup-info-banner">
+            <span class="sib-icon">💡</span>
+            <div><strong>Mỗi bảng có thể có 2–6 đội</strong> — tất cả đội sẽ đá
+              vòng tròn (round-robin). Nhập ít nhất 2 đội để bắt đầu.</div>
+          </div>
+          <div class="setup-grid" id="setup-grid"></div>
+          <div class="setup-actions">
+            <button class="btn-save" id="btn-save-setup">💾 Lưu & Tạo lịch
+              đấu</button>
+            <button class="btn-reset-soft" id="btn-reset-setup">🔄 Đặt lại tất
+              cả</button>
+          </div>
+          <div id="setup-toast" class="toast hidden">✅ Đã lưu! Lịch đấu vòng
+            tròn đã được tạo.</div>
+        </div>
+      </section>
+
+      <section id="page-results" class="page">
+        <div class="container">
+          <div class="page-hd">
+            <div class="page-hd-icon">📋</div>
+            <div>
+              <h2 class="page-title">Nhập kết quả</h2>
+              <p class="page-sub">Kết quả tự động đồng bộ cho tất cả người xem —
+                thời gian thực</p>
+            </div>
+          </div>
+          <div class="tab-bar" id="results-tabs">
+            <button class="tab-btn active" data-group="A">⚽ Bảng A</button>
+            <button class="tab-btn" data-group="B">⚽ Bảng B</button>
+            <button class="tab-btn" data-group="C">⚽ Bảng C</button>
+            <button class="tab-btn" data-group="D">⚽ Bảng D</button>
+          </div>
+          <div id="matches-list" class="matches-list"></div>
+          <div class="page-actions">
+            <button class="btn-primary" id="btn-save-results">✅ Lưu &amp; Xem
+              xếp hạng</button>
+            <button class="btn-danger" id="btn-reset-group">🗑️ Reset bảng
+              này</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-standings" class="page">
+        <div class="container">
+          <div class="page-hd">
+            <div class="page-hd-icon">📊</div>
+            <div>
+              <h2 class="page-title">Bảng xếp hạng</h2>
+              <p class="page-sub">Thứ hạng theo chuẩn FIFA · Thắng 3đ · Hoà 1đ ·
+                Thua 0đ</p>
+            </div>
+          </div>
+          <div class="tab-bar" id="standings-tabs">
+            <button class="tab-btn active" data-group="A">📊 Bảng A</button>
+            <button class="tab-btn" data-group="B">📊 Bảng B</button>
+            <button class="tab-btn" data-group="C">📊 Bảng C</button>
+            <button class="tab-btn" data-group="D">📊 Bảng D</button>
+          </div>
+          <div id="advancing-teams" class="advancing-teams"></div>
+          <div class="table-wrap">
+            <table class="std-table" id="standings-table">
+              <thead>
+                <tr>
+                  <th>#</th><th>Đội bóng</th>
+                  <th title="Trận đã đấu">TĐ</th><th title="Thắng">T</th><th
+                    title="Hoà">H</th><th title="Thua">B</th>
+                  <th title="Bàn thắng">BT</th><th title="Bàn thua">BB</th><th
+                    title="Hiệu số">HS</th><th title="Điểm">Đ</th>
+                </tr>
+              </thead>
+              <tbody id="standings-body"></tbody>
+            </table>
+          </div>
+          <div class="std-legend">
+            <span class="leg leg-gold">🥇 Nhất bảng — vào vòng tiếp</span>
+            <span class="leg leg-silver">🥈 Nhì bảng — vào vòng tiếp</span>
+          </div>
+          <button class="btn-danger mt-1" id="btn-reset-standings">🗑️ Reset
+            bảng này</button>
+        </div>
+      </section>
+
+      <section id="page-draw" class="page">
+        <div class="container">
+          <div class="page-hd">
+            <div class="page-hd-icon">🎡</div>
+            <div>
+              <h2 class="page-title">Bốc thăm chia bảng</h2>
+              <p class="page-sub">Thêm tên đội · Quay vòng ngẫu nhiên · Áp dụng
+                kết quả vào giải đấu</p>
+            </div>
+          </div>
+          <div class="draw-info-banner">
+            <span>💡</span>
+            <div>Nhập tên đội → chọn <strong>Bảng đích</strong> → nhấn
+              <strong>🎯 Quay</strong>. Mỗi bảng nhận <strong>bất kỳ số đội nào
+                ≥ 2</strong> — lịch vòng tròn tự tạo đúng số thực tế.</div>
+          </div>
+          <div class="draw-add-row">
+            <div class="draw-input-wrap">
+              <span class="draw-input-ico">⚽</span>
+              <input type="text" id="draw-team-input" class="draw-input"
+                placeholder="Nhập tên đội bóng…" maxlength="30"
+                autocomplete="off">
+            </div>
+            <button class="btn-draw-add" id="btn-draw-add">+ Thêm vào danh
+              sách</button>
+          </div>
+          <div class="draw-layout">
+            <div class="draw-wheel-col">
+              <div class="wheel-wrapper">
+                <div class="wheel-pointer">▼</div>
+                <canvas id="wheel-canvas" width="360" height="360"></canvas>
+              </div>
+              <div class="draw-group-tabs">
+                <span class="dgt-label">Đưa vào Bảng:</span>
+                <button class="draw-group-tab active" data-group="A">A</button>
+                <button class="draw-group-tab" data-group="B">B</button>
+                <button class="draw-group-tab" data-group="C">C</button>
+                <button class="draw-group-tab" data-group="D">D</button>
+              </div>
+              <button class="btn-spin" id="btn-spin">
+                <span class="spin-icon">🎯</span><span>QUAY BỐC THĂM</span>
+              </button>
+            </div>
+            <div class="draw-right-col">
+              <div class="draw-section-head">
+                <span class="dsh-icon">👥</span>
+                <strong>Danh sách đội</strong>
+                <span class="dsh-count" id="draw-total-count"></span>
+              </div>
+              <div class="draw-team-list" id="draw-team-list">
+                <div class="draw-empty-hint">✏️ Nhập tên đội bên trên rồi nhấn
+                  <strong>+ Thêm</strong></div>
+              </div>
+              <div class="draw-section-head" style="margin-top:1.5rem">
+                <span class="dsh-icon">📋</span>
+                <strong>Kết quả phân bảng</strong>
+              </div>
+              <div class="draw-groups-result">
+                <div class="draw-group-box" data-group="A">
+                  <div class="dgb-header dgb-a"><span>Bảng A</span><span
+                      class="dgb-count">0 đội</span></div>
+                  <div class="dgb-slots" id="draw-slots-A"><span
+                      class="draw-slot-empty">— trống —</span></div>
+                </div>
+                <div class="draw-group-box" data-group="B">
+                  <div class="dgb-header dgb-b"><span>Bảng B</span><span
+                      class="dgb-count">0 đội</span></div>
+                  <div class="dgb-slots" id="draw-slots-B"><span
+                      class="draw-slot-empty">— trống —</span></div>
+                </div>
+                <div class="draw-group-box" data-group="C">
+                  <div class="dgb-header dgb-c"><span>Bảng C</span><span
+                      class="dgb-count">0 đội</span></div>
+                  <div class="dgb-slots" id="draw-slots-C"><span
+                      class="draw-slot-empty">— trống —</span></div>
+                </div>
+                <div class="draw-group-box" data-group="D">
+                  <div class="dgb-header dgb-d"><span>Bảng D</span><span
+                      class="dgb-count">0 đội</span></div>
+                  <div class="dgb-slots" id="draw-slots-D"><span
+                      class="draw-slot-empty">— trống —</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="draw-actions">
+            <button class="btn-primary" id="btn-commit-draw">✅ Áp dụng vào giải
+              đấu</button>
+            <button class="btn-danger" id="btn-reset-draw">🗑️ Xóa tất
+              cả</button>
+          </div>
+          <div id="draw-toast" class="toast hidden" style="margin-top:.75rem">✅
+            Đã áp dụng kết quả bốc thăm vào giải đấu!</div>
+          <div id="spin-result-overlay" class="spin-result-overlay">
+            <div class="sro-inner">
+              <div class="sro-ball">⚽</div>
+              <div class="sro-label">ĐỘI ĐƯỢC CHỌN</div>
+              <div class="sro-name" id="spin-result-name">—</div>
+              <div class="sro-arrow">→</div>
+              <div class="sro-group" id="spin-result-group">Bảng A</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <div class="container ft-inner">
+        <span class="ft-brand">⚽ Football Championship Manager</span>
+        <span class="ft-rule">Quy tắc FIFA · Thắng 3 · Hoà 1 · Thua 0</span>
+        <span class="ft-save">🌐 Dữ liệu chia sẻ thời gian thực</span>
       </div>
-    </div>
+    </footer>
 
-    <!-- Actions -->
-    <div class="draw-actions">
-      <button class="btn-primary" id="btn-commit-draw">✅ Áp dụng vào giải đấu</button>
-      <button class="btn-danger" id="btn-reset-draw">🗑️ Xóa tất cả</button>
-    </div>
-    <div id="draw-toast" class="toast hidden" style="margin-top:.75rem">✅ Đã áp dụng kết quả bốc thăm vào giải đấu!</div>
+    <div id="confetti" class="confetti-overlay" aria-hidden="true"></div>
+    <div id="save-indicator" class="save-indicator hidden"><span>💾</span> Đã
+      lưu & đồng bộ</div>
+    <div id="sync-banner" class="sync-banner hidden"><span>🔄</span> Cập nhật từ
+      người dùng khác!</div>
 
-    <!-- Spin result overlay -->
-    <div id="spin-result-overlay" class="spin-result-overlay">
-      <div class="sro-inner">
-        <div class="sro-ball">⚽</div>
-        <div class="sro-label">ĐỘI ĐƯỢC CHỌN</div>
-        <div class="sro-name" id="spin-result-name">—</div>
-        <div class="sro-arrow">→</div>
-        <div class="sro-group" id="spin-result-group">Bảng A</div>
+    <script>
+(function () {
+  'use strict';
+
+  const STORAGE_KEY = 'fcm_shared_v1';
+  const GROUPS = ['A', 'B', 'C', 'D'];
+  const MIN_TEAMS = 2;
+  const MAX_TEAMS = 6;
+  const GROUP_COLORS = { A: 'sc-a', B: 'sc-b', C: 'sc-c', D: 'sc-d' };
+
+  // ═══════════════════════════════════════════
+  //  SHARED STORAGE — visible to ALL users
+  // ═══════════════════════════════════════════
+  let lastKnownJson = null;
+
+  async function writeShared(str) {
+    try {
+      await window.storage.set(STORAGE_KEY, str, true);
+    } catch(e) {
+      // fallback to localStorage if storage API unavailable
+      try { localStorage.setItem(STORAGE_KEY, str); } catch(ex) {}
+    }
+  }
+
+  async function readShared() {
+    try {
+      const result = await window.storage.get(STORAGE_KEY, true);
+      return result ? result.value : null;
+    } catch(e) {
+      try { return localStorage.getItem(STORAGE_KEY); } catch(ex) { return null; }
+    }
+  }
+
+  // ═══════════════════════════════════════════
+  //  DATA STRUCTURES
+  // ═══════════════════════════════════════════
+  function createDefaultData() {
+    const data = { groups: {}, drawResult: null };
+    GROUPS.forEach(g => { data.groups[g] = { teams: [], matches: [] }; });
+    return data;
+  }
+
+  async function loadData() {
+    try {
+      const raw = await readShared();
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && p.groups) {
+          if (!p.drawResult) p.drawResult = null;
+          return p;
+        }
+      }
+    } catch(e) { console.warn('Load failed', e); }
+    return createDefaultData();
+  }
+
+  function generateMatches(teams) {
+    const valid = teams.filter(t => t && t.trim());
+    const pairs = [];
+    for (let i = 0; i < valid.length; i++)
+      for (let j = i + 1; j < valid.length; j++)
+        pairs.push({ team1: valid[i], team2: valid[j], score1: null, score2: null });
+    return pairs;
+  }
+
+  function rebuildMatches(newTeams, oldMatches) {
+    const valid = newTeams.filter(t => t && t.trim());
+    const scoreMap = {};
+    (oldMatches || []).forEach(m => { scoreMap[m.team1 + '|' + m.team2] = { s1: m.score1, s2: m.score2 }; });
+    const pairs = [];
+    for (let i = 0; i < valid.length; i++) {
+      for (let j = i + 1; j < valid.length; j++) {
+        const key = valid[i] + '|' + valid[j];
+        const rkey = valid[j] + '|' + valid[i];
+        const saved = scoreMap[key] || (scoreMap[rkey] ? { s1: scoreMap[rkey].s2, s2: scoreMap[rkey].s1 } : null);
+        pairs.push({ team1: valid[i], team2: valid[j], score1: saved ? saved.s1 : null, score2: saved ? saved.s2 : null });
+      }
+    }
+    return pairs;
+  }
+
+  async function saveData(immediate) {
+    const s = JSON.stringify(appData);
+    lastKnownJson = s;
+    await writeShared(s);
+    showSaveIndicator();
+  }
+
+  let appData = createDefaultData();
+
+  // ═══════════════════════════════════════════
+  //  STANDINGS CALCULATION
+  // ═══════════════════════════════════════════
+  function calculateStandings(group) {
+    const gd = appData.groups[group];
+    if (!gd) return [];
+    const stats = {};
+    gd.teams.forEach(t => { if (t && t.trim()) stats[t] = { team:t, played:0, win:0, draw:0, lose:0, gf:0, ga:0, gd:0, pts:0 }; });
+    (gd.matches || []).forEach(m => {
+      const s1 = m.score1 == null ? null : Number(m.score1);
+      const s2 = m.score2 == null ? null : Number(m.score2);
+      if (s1 === null || s2 === null || isNaN(s1) || isNaN(s2)) return;
+      if (!stats[m.team1] || !stats[m.team2]) return;
+      stats[m.team1].played++; stats[m.team2].played++;
+      stats[m.team1].gf += s1; stats[m.team1].ga += s2;
+      stats[m.team2].gf += s2; stats[m.team2].ga += s1;
+      if (s1 > s2) { stats[m.team1].win++; stats[m.team1].pts += 3; stats[m.team2].lose++; }
+      else if (s1 < s2) { stats[m.team2].win++; stats[m.team2].pts += 3; stats[m.team1].lose++; }
+      else { stats[m.team1].draw++; stats[m.team1].pts++; stats[m.team2].draw++; stats[m.team2].pts++; }
+    });
+    return Object.values(stats).map(s => ({...s, gd: s.gf - s.ga})).sort((a,b) => b.pts-a.pts || b.gd-a.gd || b.gf-a.gf);
+  }
+
+  // ═══════════════════════════════════════════
+  //  PAGE ROUTING
+  // ═══════════════════════════════════════════
+  let currentResultsGroup = 'A', currentStandingsGroup = 'A';
+
+  function showPage(pageId, group) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const page = document.getElementById('page-' + pageId);
+    const btn = document.querySelector(`.nav-btn[data-page="${pageId}"]`);
+    if (page) page.classList.add('active');
+    if (btn) btn.classList.add('active');
+    if (pageId === 'home') renderHome();
+    if (pageId === 'setup') renderSetup();
+    if (pageId === 'draw') renderDrawPage();
+    if (pageId === 'results') {
+      if (group) currentResultsGroup = group;
+      setActiveTab('results-tabs', currentResultsGroup);
+      renderMatchesList();
+    }
+    if (pageId === 'standings') {
+      if (group) currentStandingsGroup = group;
+      setActiveTab('standings-tabs', currentStandingsGroup);
+      renderStandings();
+    }
+  }
+
+  function setActiveTab(id, group) {
+    document.getElementById(id)?.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.group === group));
+  }
+
+  function getCurrentPageId() {
+    const active = document.querySelector('.page.active');
+    return active ? active.id.replace('page-', '') : 'home';
+  }
+
+  // ═══════════════════════════════════════════
+  //  HOME
+  // ═══════════════════════════════════════════
+  function renderHome() {
+    const grid = document.getElementById('home-groups-grid');
+    if (!grid) return;
+    grid.innerHTML = GROUPS.map(g => {
+      const gd = appData.groups[g] || { teams: [] };
+      const teams = gd.teams.length ? gd.teams : [];
+      const count = teams.length;
+      const matchCount = count >= 2 ? count * (count - 1) / 2 : 0;
+      const items = count === 0
+        ? `<div class="group-team-item team-empty"><span class="team-dot"></span>Chưa có đội nào</div>`
+        : teams.map(t => `<div class="group-team-item"><span class="team-dot"></span>${escHtml(t)}</div>`).join('');
+      return `<article class="group-card" data-group="${g}">
+        <div class="group-card-header">
+          <div class="group-letter">${g}</div>
+          <h3>Bảng ${g}</h3>
+          <span class="group-meta">${count} đội · ${matchCount} trận</span>
+        </div>
+        <div class="group-card-teams">${items}</div>
+        <div class="group-card-btns">
+          <button class="btn btn-gold btn-sm" data-goto="standings" data-group="${g}">🏅 Xếp hạng</button>
+          <button class="btn btn-ghost btn-sm" data-goto="results" data-group="${g}">📋 Kết quả</button>
+        </div></article>`;
+    }).join('');
+    grid.querySelectorAll('[data-goto]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); showPage(btn.dataset.goto, btn.dataset.group); }));
+    grid.querySelectorAll('.group-card').forEach(card => card.addEventListener('click', () => showPage('standings', card.dataset.group)));
+  }
+
+  // ═══════════════════════════════════════════
+  //  SETUP
+  // ═══════════════════════════════════════════
+  function renderSetup() {
+    const grid = document.getElementById('setup-grid');
+    if (!grid) return;
+    grid.innerHTML = GROUPS.map(g => {
+      const gd = appData.groups[g] || { teams: [] };
+      const teams = gd.teams.length ? [...gd.teams] : [];
+      while (teams.length < 4) teams.push('');
+      const rows = teams.map((name, idx) => buildTeamRow(g, idx, name, teams.length)).join('');
+      const canAdd = teams.length < MAX_TEAMS;
+      const matchCount = countValidTeams(teams) >= 2 ? countValidTeams(teams) * (countValidTeams(teams)-1) / 2 : 0;
+      return `<div class="setup-card" data-group="${g}">
+        <div class="sc-header ${GROUP_COLORS[g]}">
+          <span class="sc-letter">${g}</span>
+          <span class="sc-title">Bảng ${g}</span>
+          <span class="sc-match-count" id="sc-count-${g}">${matchCount > 0 ? matchCount + ' trận' : ''}</span>
+          <span class="sc-ball">⚽</span>
+        </div>
+        <div class="sc-body" id="sc-body-${g}">${rows}</div>
+        <div class="sc-footer">
+          <button class="sc-add-btn${canAdd ? '' : ' disabled'}" data-group="${g}" id="sc-add-${g}" ${canAdd ? '' : 'disabled'}>
+            + Thêm đội (${teams.length}/${MAX_TEAMS})
+          </button>
+          <span class="sc-hint">Vòng tròn: mỗi cặp đấu 1 lần</span>
+        </div>
+      </div>`;
+    }).join('');
+    document.querySelectorAll('.sc-add-btn').forEach(btn => { btn.addEventListener('click', () => addTeamSlot(btn.dataset.group)); });
+    document.querySelectorAll('.sc-remove-btn').forEach(btn => { btn.addEventListener('click', () => removeTeamSlot(btn.dataset.group, parseInt(btn.dataset.idx))); });
+    bindSetupInputs();
+  }
+
+  function buildTeamRow(g, idx, value, totalRows) {
+    const canRemove = totalRows > 2;
+    return `<div class="ti-row" id="ti-row-${g}-${idx}">
+      <span class="ti-no">${idx + 1}</span>
+      <input class="ti team-name-input" type="text" data-group="${g}" data-idx="${idx}" value="${escHtml(value)}" placeholder="Tên đội ${idx + 1}…" maxlength="30" autocomplete="off">
+      ${canRemove ? `<button class="sc-remove-btn" data-group="${g}" data-idx="${idx}" title="Xóa đội này">✕</button>` : '<span class="sc-remove-placeholder"></span>'}
+    </div>`;
+  }
+
+  function countValidTeams(teams) { return teams.filter(t => t && t.trim()).length; }
+
+  function addTeamSlot(g) {
+    const gd = appData.groups[g] || { teams: [], matches: [] };
+    if (gd.teams.length >= MAX_TEAMS) return;
+    gd.teams.push('');
+    appData.groups[g] = gd;
+    saveData();
+    renderSetup();
+    const inputs = document.querySelectorAll(`.team-name-input[data-group="${g}"]`);
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }
+
+  function removeTeamSlot(g, idx) {
+    const gd = appData.groups[g] || { teams: [], matches: [] };
+    if (gd.teams.length <= MIN_TEAMS) return;
+    gd.teams.splice(idx, 1);
+    gd.matches = rebuildMatches(gd.teams, gd.matches);
+    appData.groups[g] = gd;
+    saveData();
+    renderSetup();
+    renderHome();
+  }
+
+  function bindSetupInputs() {
+    document.querySelectorAll('.team-name-input').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const g = inp.dataset.group, idx = parseInt(inp.dataset.idx);
+        if (!appData.groups[g]) appData.groups[g] = { teams: [], matches: [] };
+        appData.groups[g].teams[idx] = inp.value.trim();
+        updateMatchCountBadge(g);
+        saveData();
+      });
+    });
+  }
+
+  function updateMatchCountBadge(g) {
+    const badge = document.getElementById(`sc-count-${g}`);
+    if (!badge) return;
+    const teams = (appData.groups[g]?.teams || []).filter(t => t && t.trim());
+    const n = teams.length;
+    badge.textContent = n >= 2 ? `${n*(n-1)/2} trận` : '';
+  }
+
+  function saveSetup() {
+    GROUPS.forEach(g => {
+      const inputs = document.querySelectorAll(`.team-name-input[data-group="${g}"]`);
+      const names = Array.from(inputs).map(inp => inp.value.trim()).filter(n => n);
+      if (!appData.groups[g]) appData.groups[g] = { teams: [], matches: [] };
+      const oldMatches = appData.groups[g].matches || [];
+      appData.groups[g].teams = names;
+      appData.groups[g].matches = rebuildMatches(names, oldMatches);
+    });
+    saveData(true);
+    renderHome();
+    const toast = document.getElementById('setup-toast');
+    if (toast) { toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 3000); }
+  }
+
+  function resetSetup() {
+    GROUPS.forEach(g => { appData.groups[g] = { teams: [], matches: [] }; });
+    saveData(true);
+    renderSetup();
+    renderHome();
+  }
+
+  // ═══════════════════════════════════════════
+  //  RESULTS PAGE
+  // ═══════════════════════════════════════════
+  function renderMatchesList() {
+    const group = currentResultsGroup;
+    const container = document.getElementById('matches-list');
+    if (!container) return;
+    const gd = appData.groups[group];
+    if (!gd || gd.teams.filter(t => t&&t.trim()).length < 2) {
+      container.innerHTML = `<div class="matches-empty"><div class="me-icon">⚽</div><div class="me-title">Chưa có đội nào trong Bảng ${group}</div><div class="me-sub">Vào <strong>⚙️ Thiết lập</strong> để thêm đội trước</div></div>`;
+      return;
+    }
+    const matches = gd.matches || [];
+    if (matches.length === 0) {
+      container.innerHTML = `<div class="matches-empty"><div class="me-icon">📋</div><div class="me-title">Lịch đấu chưa được tạo</div><div class="me-sub">Nhấn <strong>💾 Lưu thiết lập</strong> để tạo lịch đấu vòng tròn</div></div>`;
+      return;
+    }
+    const roundRobinRounds = buildRounds(gd.teams.filter(t=>t&&t.trim()));
+    let html = '';
+    if (roundRobinRounds.length > 1) {
+      roundRobinRounds.forEach((round, ri) => {
+        html += `<div class="match-round-header">⚔️ Lượt ${ri + 1}</div>`;
+        round.forEach(pair => {
+          const mIdx = matches.findIndex(m => (m.team1===pair[0]&&m.team2===pair[1]) || (m.team1===pair[1]&&m.team2===pair[0]));
+          if (mIdx === -1) return;
+          const m = matches[mIdx];
+          const s1 = m.score1 != null ? m.score1 : '', s2 = m.score2 != null ? m.score2 : '';
+          html += matchRowHTML(mIdx, m, s1, s2);
+        });
+      });
+    } else {
+      matches.forEach((m, i) => {
+        const s1 = m.score1 != null ? m.score1 : '', s2 = m.score2 != null ? m.score2 : '';
+        html += matchRowHTML(i, m, s1, s2);
+      });
+    }
+    container.innerHTML = html;
+    bindMatchInputs(group);
+  }
+
+  function matchRowHTML(idx, m, s1, s2) {
+    return `<div class="match-row${s1!==''&&s2!==''?' has-result':''}" data-idx="${idx}">
+      <span class="match-team">${escHtml(m.team1)}</span>
+      <div class="match-inputs">
+        <input type="number" min="0" step="1" value="${s1}" placeholder="—" data-score="1">
+        <span class="score-dash">:</span>
+        <input type="number" min="0" step="1" value="${s2}" placeholder="—" data-score="2">
       </div>
-    </div>
-  </div>
-</section>
+      <span class="match-team right">${escHtml(m.team2)}</span>
+    </div>`;
+  }
 
+  function buildRounds(teams) {
+    const n = teams.length;
+    if (n < 2) return [];
+    const rounds = [];
+    const list = [...teams];
+    const isOdd = n % 2 !== 0;
+    if (isOdd) list.push('__BYE__');
+    const total = list.length;
+    for (let r = 0; r < total - 1; r++) {
+      const round = [];
+      for (let i = 0; i < total / 2; i++) {
+        const t1 = list[i], t2 = list[total - 1 - i];
+        if (t1 !== '__BYE__' && t2 !== '__BYE__') round.push([t1, t2]);
+      }
+      rounds.push(round);
+      list.splice(1, 0, list.pop());
+    }
+    return rounds;
+  }
 
-</main>
+  function bindMatchInputs(group) {
+    const container = document.getElementById('matches-list');
+    if (!container) return;
+    container.querySelectorAll('.match-row').forEach(row => {
+      const idx = parseInt(row.dataset.idx);
+      const [in1, in2] = row.querySelectorAll('input');
+      const update = () => {
+        const v1 = in1.value.trim(), v2 = in2.value.trim();
+        const m = appData.groups[group].matches[idx];
+        if (!m) return;
+        m.score1 = v1 === '' ? null : parseInt(v1, 10);
+        m.score2 = v2 === '' ? null : parseInt(v2, 10);
+        row.classList.toggle('has-result', v1 !== '' && v2 !== '');
+        saveData();
+      };
+      in1.addEventListener('input', update);
+      in2.addEventListener('input', update);
+    });
+  }
 
-<!-- ░░ FOOTER ░░ -->
-<footer class="footer">
-  <div class="container ft-inner">
-    <span class="ft-brand">⚽ Football Championship Manager</span>
-    <span class="ft-rule">Quy tắc FIFA · Thắng 3 · Hoà 1 · Thua 0</span>
-    <span class="ft-save">💾 Dữ liệu tự động lưu trình duyệt</span>
-  </div>
-</footer>
+  function resetGroup(group) {
+    if (!appData.groups[group]) return;
+    appData.groups[group].matches = rebuildMatches(appData.groups[group].teams, []);
+    saveData(true);
+    renderMatchesList();
+    renderStandings();
+  }
 
-<!-- ░░ CONFETTI OVERLAY ░░ -->
-<div id="confetti" class="confetti-overlay" aria-hidden="true"></div>
+  // ═══════════════════════════════════════════
+  //  STANDINGS
+  // ═══════════════════════════════════════════
+  function renderStandings() {
+    const group = currentStandingsGroup;
+    const standings = calculateStandings(group);
+    const tbody = document.getElementById('standings-body');
+    if (!tbody) return;
+    const gd = appData.groups[group];
+    const teamCount = gd ? gd.teams.filter(t=>t&&t.trim()).length : 0;
+    if (teamCount < 2) {
+      tbody.innerHTML = `<tr><td colspan="10" class="std-empty">Bảng ${group} chưa có đủ đội — vào ⚙️ Thiết lập để thêm đội</td></tr>`;
+      const advEl = document.getElementById('advancing-teams');
+      if (advEl) advEl.innerHTML = '';
+      return;
+    }
+    tbody.innerHTML = standings.map((row,i) => {
+      const rank=i+1, rankClass=rank===1?'rank-1':rank===2?'rank-2':'';
+      const badge=['','r1','r2','r3','r4','r5','r6'][rank]||'r6';
+      const gds=row.gd>=0?'+'+row.gd:''+row.gd;
+      const gdClass=row.gd>0?'gd-positive':row.gd<0?'gd-negative':'';
+      const advIcon = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'⚽';
+      return `<tr class="${rankClass}" style="animation:rowIn .4s ${i*.07}s both">
+        <td><span class="rank-badge ${badge}">${rank}</span></td>
+        <td><div class="team-cell"><div class="team-flag">${advIcon}</div><strong>${escHtml(row.team)}</strong></div></td>
+        <td>${row.played}</td><td>${row.win}</td><td>${row.draw}</td><td>${row.lose}</td>
+        <td>${row.gf}</td><td>${row.ga}</td>
+        <td class="${gdClass}">${gds}</td>
+        <td class="pts-cell">${row.pts}</td></tr>`;
+    }).join('');
+    if (!document.getElementById('row-anim-style')) {
+      const s=document.createElement('style'); s.id='row-anim-style';
+      s.textContent='@keyframes rowIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}';
+      document.head.appendChild(s);
+    }
+    const advEl = document.getElementById('advancing-teams');
+    if (advEl) {
+      const [f, s] = standings;
+      advEl.innerHTML =
+        (f ? `<div class="advance-card first" style="animation-delay:0s"><span class="advance-icon">🥇</span><div><div class="advance-label">NHẤT BẢNG</div><div class="advance-team">${escHtml(f.team)}</div></div></div>` : '') +
+        (s ? `<div class="advance-card second" style="animation-delay:.12s"><span class="advance-icon">🥈</span><div><div class="advance-label">NHÌ BẢNG</div><div class="advance-team">${escHtml(s.team)}</div></div></div>` : '');
+    }
+  }
 
-<!-- ░░ SAVE INDICATOR ░░ -->
-<div id="save-indicator" class="save-indicator hidden">
-  <span>💾</span> Đã lưu tự động
-</div>
+  // ═══════════════════════════════════════════
+  //  DRAW PAGE — WHEEL
+  // ═══════════════════════════════════════════
+  let drawTeams = [];
+  let wheelSpinning = false;
+  let currentDrawGroup = 'A';
+  let wheelAngle = 0;
 
-<script src="script.js"></script>
-</body>
+  const WHEEL_COLORS = ['#1253CC','#E0220A','#007A48','#FF9500','#6040E0','#00A05C','#FF3085','#0099CC','#B07800','#2ECC8B','#FF6B00','#5A9AFF','#A0C030','#D44000','#8050D0','#00BFAE'];
+
+  function renderDrawPage() {
+    if (appData.drawResult?.teams) drawTeams = [...appData.drawResult.teams];
+    renderDrawTeamList(); renderDrawGroupSlots(); renderWheel(); updateGroupTabActive();
+  }
+
+  function renderDrawTeamList() {
+    const c = document.getElementById('draw-team-list');
+    if (!c) return;
+    const cnt = document.getElementById('draw-total-count');
+    if (cnt) cnt.textContent = drawTeams.length ? `${drawTeams.length} đội` : '';
+    if (!drawTeams.length) { c.innerHTML = `<div class="draw-empty-hint">✏️ Nhập tên đội bên trên rồi nhấn <strong>+ Thêm</strong> để bắt đầu</div>`; return; }
+    c.innerHTML = drawTeams.map((t,i) => `
+      <div class="draw-team-chip">
+        <span class="dtc-num">${i+1}</span>
+        <span class="dtc-name">${escHtml(t.name)}</span>
+        ${t.group ? `<span class="dtc-badge grp-${t.group}">Bảng ${t.group}</span>` : '<span class="dtc-badge dtc-pending">Chờ bốc</span>'}
+        <button class="dtc-remove" data-idx="${i}" title="Xóa">✕</button>
+      </div>`).join('');
+    c.querySelectorAll('.dtc-remove').forEach(btn => btn.addEventListener('click', e => {
+      e.stopPropagation();
+      drawTeams.splice(parseInt(btn.dataset.idx),1);
+      persistDrawState(); renderDrawTeamList(); renderWheel(); renderDrawGroupSlots();
+    }));
+  }
+
+  function renderDrawGroupSlots() {
+    GROUPS.forEach(g => {
+      const slot = document.getElementById(`draw-slots-${g}`);
+      if (!slot) return;
+      const inGroup = drawTeams.filter(t => t.group === g);
+      slot.innerHTML = inGroup.length === 0
+        ? `<span class="draw-slot-empty">— trống —</span>`
+        : inGroup.map(t => `<span class="draw-slot-team">${escHtml(t.name)}</span>`).join('');
+      const badge = document.querySelector(`.draw-group-box[data-group="${g}"] .dgb-count`);
+      if (badge) { badge.textContent = `${inGroup.length} đội`; badge.className = `dgb-count${inGroup.length >= 2?' has-teams':''}`; }
+    });
+  }
+
+  function renderWheel() {
+    const canvas = document.getElementById('wheel-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const size = canvas.width, cx = size/2, cy = size/2, r = size/2 - 6;
+    ctx.clearRect(0,0,size,size);
+    const unassigned = drawTeams.filter(t => !t.group);
+    if (!unassigned.length) {
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.fillStyle='#0A1A3A'; ctx.fill();
+      ctx.strokeStyle='rgba(255,190,0,.5)'; ctx.lineWidth=4; ctx.stroke();
+      ctx.fillStyle='rgba(255,255,255,.4)'; ctx.font='bold 14px Barlow Condensed,sans-serif';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(drawTeams.length===0?'Thêm đội để bắt đầu':'Tất cả đã phân bảng! 🎉',cx,cy);
+      return;
+    }
+    const n = unassigned.length, slice = (Math.PI*2)/n;
+    const gr = ctx.createRadialGradient(cx,cy,r-8,cx,cy,r+4);
+    gr.addColorStop(0,'rgba(255,190,0,0)'); gr.addColorStop(1,'rgba(255,190,0,.3)');
+    ctx.beginPath(); ctx.arc(cx,cy,r+4,0,Math.PI*2); ctx.fillStyle=gr; ctx.fill();
+    unassigned.forEach((team,i) => {
+      const start=i*slice+wheelAngle, end=start+slice;
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,start,end); ctx.closePath();
+      ctx.fillStyle=WHEEL_COLORS[i%WHEEL_COLORS.length]; ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.lineWidth=2; ctx.stroke();
+      ctx.save(); ctx.translate(cx,cy); ctx.rotate(start+slice/2);
+      const fs=n>12?10:n>8?12:14, maxLen=n>10?8:12;
+      const lbl=team.name.length>maxLen?team.name.substring(0,maxLen)+'…':team.name;
+      ctx.font=`bold ${fs}px Barlow Condensed,sans-serif`;
+      ctx.textAlign='right'; ctx.textBaseline='middle';
+      ctx.fillStyle='#fff'; ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=4;
+      ctx.fillText(lbl,r*.85,0); ctx.restore();
+    });
+    ctx.beginPath(); ctx.arc(cx,cy,24,0,Math.PI*2);
+    const hg=ctx.createRadialGradient(cx,cy,0,cx,cy,24);
+    hg.addColorStop(0,'#1E3070'); hg.addColorStop(1,'#0A1428');
+    ctx.fillStyle=hg; ctx.fill();
+    ctx.strokeStyle='rgba(255,190,0,.9)'; ctx.lineWidth=3; ctx.shadowBlur=8; ctx.shadowColor='rgba(255,190,0,.6)'; ctx.stroke(); ctx.shadowBlur=0;
+    ctx.font='20px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('⚽',cx,cy);
+  }
+
+  function spinWheel() {
+    if (wheelSpinning) return;
+    const unassigned = drawTeams.filter(t => !t.group);
+    if (!unassigned.length) { alert('Tất cả đội đã được phân bảng!'); return; }
+    wheelSpinning = true;
+    const spinBtn = document.getElementById('btn-spin');
+    if (spinBtn) spinBtn.classList.add('spinning');
+    const winnerIdx = Math.floor(Math.random() * unassigned.length);
+    const n = unassigned.length, slice = (Math.PI*2)/n;
+    const targetCenter = winnerIdx*slice + slice/2;
+    const targetFinal = -Math.PI/2 - targetCenter;
+    const curNorm = ((wheelAngle%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);
+    const tgtNorm = ((targetFinal%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);
+    let delta = tgtNorm - curNorm; if (delta<=0) delta+=Math.PI*2;
+    const totalRot = (5+Math.floor(Math.random()*4))*Math.PI*2 + delta;
+    const startAngle = wheelAngle, dur = 4500+Math.random()*1500, startTime = performance.now();
+    function ease(t){return 1-Math.pow(1-t,4);}
+    function animate(now) {
+      const t = Math.min((now-startTime)/dur,1);
+      wheelAngle = startAngle + totalRot*ease(t);
+      renderWheel();
+      if (t<1){requestAnimationFrame(animate);return;}
+      wheelSpinning=false; if(spinBtn)spinBtn.classList.remove('spinning');
+      const winner=unassigned[winnerIdx];
+      const found=drawTeams.find(x=>x.name===winner.name&&!x.group);
+      if(found) found.group=currentDrawGroup;
+      persistDrawState(); renderDrawTeamList(); renderDrawGroupSlots(); renderWheel();
+      showSpinResult(winner.name,currentDrawGroup);
+    }
+    requestAnimationFrame(animate);
+  }
+
+  function showSpinResult(name,group) {
+    const overlay=document.getElementById('spin-result-overlay');
+    if(!overlay)return;
+    document.getElementById('spin-result-name').textContent=name;
+    document.getElementById('spin-result-group').textContent=`Bảng ${group}`;
+    overlay.classList.add('visible'); spawnConfetti();
+    setTimeout(()=>overlay.classList.remove('visible'),3800);
+  }
+
+  function updateGroupTabActive() {
+    document.querySelectorAll('.draw-group-tab').forEach(btn=>btn.classList.toggle('active',btn.dataset.group===currentDrawGroup));
+  }
+
+  function persistDrawState() { appData.drawResult={teams:[...drawTeams]}; saveData(true); }
+
+  function commitDrawToGroups() {
+    const anyFilled = GROUPS.some(g => drawTeams.filter(t => t.group === g).length > 0);
+    if (!anyFilled) { alert('Chưa có đội nào được phân bảng. Hãy quay bánh xe trước!'); return; }
+    const singleTeamGroups = GROUPS.filter(g => drawTeams.filter(t => t.group === g).length === 1);
+    if (singleTeamGroups.length > 0) {
+      if (!confirm('Bảng ' + singleTeamGroups.join(', ') + ' chỉ có 1 đội — cần ít nhất 2 đội.\nTiếp tục sẽ bỏ qua các bảng đó. Tiếp tục?')) return;
+    }
+    const unassigned = drawTeams.filter(t => !t.group);
+    if (unassigned.length > 0) {
+      if (!confirm('Còn ' + unassigned.length + ' đội chưa phân bảng: ' + unassigned.map(t => t.name).join(', ') + '.\nTiếp tục?')) return;
+    }
+    const summary = GROUPS.map(g => {
+      const cnt = drawTeams.filter(t => t.group === g).length;
+      const matches = cnt >= 2 ? cnt * (cnt - 1) / 2 : 0;
+      return cnt >= 2 ? `Bảng ${g}: ${cnt} đội → ${matches} trận` : null;
+    }).filter(Boolean).join('\n');
+    if (!confirm('Áp dụng kết quả bốc thăm:\n\n' + summary + '\n\nXác nhận?')) return;
+    GROUPS.forEach(g => {
+      const names = drawTeams.filter(t => t.group === g).map(t => t.name);
+      if (!appData.groups[g]) appData.groups[g] = { teams: [], matches: [] };
+      if (names.length < 2) { appData.groups[g].teams = names.length === 1 ? names : []; appData.groups[g].matches = []; return; }
+      const old = appData.groups[g].matches || [];
+      appData.groups[g].teams = names;
+      appData.groups[g].matches = rebuildMatches(names, old);
+    });
+    saveData(true); renderHome();
+    const toast = document.getElementById('draw-toast');
+    if (toast) { toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 3500); }
+  }
+
+  function resetDrawPage() {
+    if(!confirm('Xóa toàn bộ danh sách đội và kết quả bốc thăm?'))return;
+    drawTeams=[]; currentDrawGroup='A'; wheelAngle=0;
+    appData.drawResult=null; saveData(true); renderDrawPage();
+  }
+
+  // ═══════════════════════════════════════════
+  //  INDICATORS / CONFETTI / PARTICLES
+  // ═══════════════════════════════════════════
+  let siTimer=null;
+  function showSaveIndicator(){
+    const el=document.getElementById('save-indicator');
+    if(!el)return; el.classList.remove('hidden'); clearTimeout(siTimer);
+    siTimer=setTimeout(()=>el.classList.add('hidden'),2200);
+  }
+
+  let sbTimer=null;
+  function showSyncBanner(){
+    const el=document.getElementById('sync-banner');
+    if(!el)return; el.classList.remove('hidden'); clearTimeout(sbTimer);
+    sbTimer=setTimeout(()=>el.classList.add('hidden'),3000);
+  }
+
+  function setLiveBadge(state) {
+    // state: 'live' | 'syncing' | 'offline'
+    const badge = document.getElementById('live-badge');
+    const label = document.getElementById('live-label');
+    if (!badge||!label) return;
+    badge.className = 'live-badge' + (state==='syncing'?' syncing':'');
+    label.textContent = state==='syncing' ? 'ĐANG SYNC...' : 'LIVE SYNC';
+  }
+
+  function spawnConfetti(){
+    const c=document.getElementById('confetti');if(!c)return;
+    const colors=['#FFD700','#FFBE00','#00FF87','#00D4FF','#FF3085','#1E6AFF','#FF6B00','#fff'];
+    for(let i=0;i<70;i++){
+      const p=document.createElement('div');p.className='confetti-piece';
+      p.style.cssText=`left:${Math.random()*100}%;width:${5+Math.random()*9}px;height:${5+Math.random()*9}px;background:${colors[~~(Math.random()*colors.length)]};animation-duration:${2.2+Math.random()*3}s;animation-delay:${Math.random()*1.5}s;border-radius:${Math.random()>.5?'50%':'3px'}`;
+      c.appendChild(p);setTimeout(()=>p.remove(),5500);
+    }
+  }
+
+  function initParticles(){
+    const c=document.getElementById('particles');if(!c)return;
+    const cols=['rgba(18,83,204,.25)','rgba(0,160,92,.22)','rgba(255,149,0,.20)','rgba(0,212,255,.18)'];
+    for(let i=0;i<18;i++){
+      const p=document.createElement('div');p.className='particle';const s=3+Math.random()*5;
+      p.style.cssText=`left:${Math.random()*100}%;width:${s}px;height:${s}px;background:${cols[~~(Math.random()*cols.length)]};animation-duration:${14+Math.random()*18}s;animation-delay:${-Math.random()*20}s`;
+      c.appendChild(p);
+    }
+  }
+
+  function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+  // ═══════════════════════════════════════════
+  //  LIVE SYNC — poll every 5s for remote changes
+  // ═══════════════════════════════════════════
+  function rerenderCurrentPage() {
+    const pageId = getCurrentPageId();
+    if (pageId === 'home') renderHome();
+    else if (pageId === 'setup') renderSetup();
+    else if (pageId === 'results') renderMatchesList();
+    else if (pageId === 'standings') renderStandings();
+    else if (pageId === 'draw') renderDrawPage();
+  }
+
+  async function checkRemoteUpdates() {
+    setLiveBadge('syncing');
+    try {
+      const raw = await readShared();
+      if (raw && raw !== lastKnownJson) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.groups) {
+          appData = parsed;
+          lastKnownJson = raw;
+          if (parsed.drawResult?.teams) drawTeams = [...parsed.drawResult.teams];
+          rerenderCurrentPage();
+          showSyncBanner();
+        }
+      }
+    } catch(e) {}
+    setLiveBadge('live');
+  }
+
+  // ═══════════════════════════════════════════
+  //  EVENTS
+  // ═══════════════════════════════════════════
+  document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>showPage(btn.dataset.page)));
+  document.querySelectorAll('[data-page]').forEach(btn=>{if(!btn.classList.contains('nav-btn'))btn.addEventListener('click',()=>showPage(btn.dataset.page));});
+
+  document.getElementById('results-tabs')?.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{currentResultsGroup=btn.dataset.group;setActiveTab('results-tabs',currentResultsGroup);renderMatchesList();}));
+  document.getElementById('standings-tabs')?.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{currentStandingsGroup=btn.dataset.group;setActiveTab('standings-tabs',currentStandingsGroup);renderStandings();}));
+
+  document.getElementById('btn-save-setup')?.addEventListener('click',saveSetup);
+  document.getElementById('btn-reset-setup')?.addEventListener('click',()=>{if(confirm('Xóa tất cả đội và lịch đấu?'))resetSetup();});
+  document.getElementById('btn-save-results')?.addEventListener('click',()=>{saveData(true);spawnConfetti();currentStandingsGroup=currentResultsGroup;showPage('standings',currentResultsGroup);});
+  document.getElementById('btn-reset-group')?.addEventListener('click',()=>{if(confirm('Reset kết quả Bảng '+currentResultsGroup+'?'))resetGroup(currentResultsGroup);});
+  document.getElementById('btn-reset-standings')?.addEventListener('click',()=>{if(confirm('Reset kết quả Bảng '+currentStandingsGroup+'?'))resetGroup(currentStandingsGroup);});
+
+  document.getElementById('btn-draw-add')?.addEventListener('click',()=>{
+    const inp=document.getElementById('draw-team-input');if(!inp)return;
+    const name=inp.value.trim();
+    if(!name){inp.focus();inp.classList.add('shake');setTimeout(()=>inp.classList.remove('shake'),400);return;}
+    if(drawTeams.find(t=>t.name.toLowerCase()===name.toLowerCase())){alert('Đội này đã có!');return;}
+    drawTeams.push({name,group:null});inp.value='';inp.focus();
+    persistDrawState();renderDrawTeamList();renderWheel();renderDrawGroupSlots();
+  });
+  document.getElementById('draw-team-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('btn-draw-add')?.click();});
+  document.getElementById('btn-spin')?.addEventListener('click',spinWheel);
+  document.getElementById('btn-commit-draw')?.addEventListener('click',commitDrawToGroups);
+  document.getElementById('btn-reset-draw')?.addEventListener('click',resetDrawPage);
+  document.querySelectorAll('.draw-group-tab').forEach(btn=>btn.addEventListener('click',()=>{currentDrawGroup=btn.dataset.group;updateGroupTabActive();}));
+
+  // ═══════════════════════════════════════════
+  //  INIT — async load then start
+  // ═══════════════════════════════════════════
+  async function init() {
+    initParticles();
+    appData = await loadData();
+    const raw = JSON.stringify(appData);
+    lastKnownJson = raw;
+    if (appData.drawResult?.teams) drawTeams = [...appData.drawResult.teams];
+    showPage('home');
+
+    // Start live sync polling every 5 seconds
+    setInterval(checkRemoteUpdates, 5000);
+  }
+
+  init();
+})();
+</script>
+  </body>
 </html>
