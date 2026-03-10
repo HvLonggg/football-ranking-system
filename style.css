@@ -1651,3 +1651,144 @@ body {
 }
 .draw-info-banner span:first-child { font-size: 1.2rem; flex-shrink: 0; margin-top: .05rem; }
 .draw-info-banner strong { color: var(--blue); }
+/* ═══════════════════════════════════════════════
+   SYNC STATUS BADGE
+═══════════════════════════════════════════════ */
+.sync-status-badge {
+  display: flex; align-items: center; gap: .45rem;
+  padding: .32rem .85rem;
+  border-radius: 30px;
+  font-family: var(--font-cond);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  border: 1.5px solid var(--border);
+  background: var(--off);
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: all .3s;
+}
+.sync-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background .3s;
+}
+.sync-dot.green  { background: #00C864; box-shadow: 0 0 6px rgba(0,200,100,.6); animation: dotPulse 1.6s infinite; }
+.sync-dot.yellow { background: #FF9500; box-shadow: 0 0 6px rgba(255,149,0,.6); animation: dotPulse .8s infinite; }
+.sync-dot.red    { background: #E0220A; box-shadow: 0 0 6px rgba(224,34,10,.5); }
+.sync-dot.gray   { background: var(--text-light); }
+@keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.5;transform:scale(1.4);} }
+
+.sync-status-badge.online  { background: rgba(0,200,100,.10); border-color: rgba(0,200,100,.35); color: #007A48; }
+.sync-status-badge.offline { background: rgba(224,34,10,.10); border-color: rgba(224,34,10,.3);  color: var(--red); }
+.sync-status-badge.saving  { background: rgba(255,149,0,.10); border-color: rgba(255,149,0,.35); color: #C07000; }
+.sync-status-badge.local   { background: var(--off); border-color: var(--border); color: var(--text-muted); }
+
+/* ═══════════════════════════════════════════════
+   FIREBASE SETUP BANNER
+═══════════════════════════════════════════════ */
+.firebase-banner {
+  position: sticky; top: 70px; z-index: 150;
+  background: linear-gradient(135deg, #FFF7E0, #FFF3C8);
+  border-bottom: 2px solid rgba(255,149,0,.4);
+  box-shadow: 0 4px 16px rgba(255,149,0,.2);
+  padding: .75rem 1.5rem;
+}
+.firebase-banner.hidden { display: none; }
+.fb-inner {
+  max-width: 1160px; margin: 0 auto;
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.fb-icon { font-size: 1.5rem; flex-shrink: 0; }
+.fb-content { flex: 1; font-size: .9rem; color: var(--text-mid); line-height: 1.4; }
+.fb-content strong { color: #B06000; display: block; font-family: var(--font-cond); font-size: 1rem; letter-spacing: .04em; }
+.fb-content code { background: rgba(0,0,0,.08); padding: .1em .4em; border-radius: 4px; font-size: .85em; }
+.fb-link {
+  padding: .42rem 1rem;
+  background: linear-gradient(135deg,#FF6B00,#FF9500);
+  color: #fff;
+  font-family: var(--font-cond); font-size: .88rem; font-weight: 900; letter-spacing: .06em;
+  border-radius: 20px; text-decoration: none;
+  transition: all .22s var(--ease-spring); white-space: nowrap;
+  box-shadow: 0 3px 10px rgba(255,100,0,.3);
+}
+.fb-link:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,100,0,.4); }
+.fb-close {
+  width: 28px; height: 28px; border: none; background: rgba(0,0,0,.1);
+  color: var(--text-mid); border-radius: 50%; cursor: pointer; font-size: .8rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: background .2s;
+}
+.fb-close:hover { background: rgba(0,0,0,.2); }
+
+/* ═══════════════════════════════════════════════
+   HOW-TO MODAL
+═══════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(6,15,46,.65);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+.modal-overlay.hidden { display: none; }
+.modal-box {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  padding: 2.2rem 2.5rem;
+  max-width: 560px; width: 100%;
+  position: relative;
+  box-shadow: 0 32px 80px rgba(0,0,0,.45);
+  animation: modalIn .4s var(--ease-spring);
+}
+@keyframes modalIn { from{opacity:0;transform:scale(.85) translateY(20px);} to{opacity:1;transform:none;} }
+.modal-close {
+  position: absolute; top: 1.2rem; right: 1.2rem;
+  width: 34px; height: 34px; border: none; background: var(--off);
+  color: var(--text-mid); border-radius: 50%; cursor: pointer; font-size: .9rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s; z-index: 1;
+}
+.modal-close:hover { background: var(--red-pale); color: var(--red); }
+.modal-box h3 {
+  font-family: var(--font-display); font-size: 1.8rem; letter-spacing: .05em;
+  color: var(--text); margin-bottom: 1.3rem;
+}
+.modal-box ol {
+  padding-left: 1.4rem; display: flex; flex-direction: column; gap: .65rem;
+  color: var(--text-mid); font-size: .95rem; line-height: 1.55; margin-bottom: 1.2rem;
+}
+.modal-box ol li strong { color: var(--blue); }
+.modal-box ol li a { color: var(--blue); font-weight: 700; }
+.modal-box ol li code { background: var(--blue-pale); color: var(--blue); padding: .15em .5em; border-radius: 5px; font-size: .88em; }
+.modal-code {
+  background: #0D1B3E;
+  border-radius: var(--radius-sm);
+  padding: .9rem 1.2rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+.modal-code code {
+  color: #00FF87; font-size: .88rem; font-family: 'Courier New', monospace; white-space: nowrap;
+}
+.modal-box p { font-size: .9rem; color: var(--text-muted); }
+
+/* ═══════════════════════════════════════════════
+   REMOTE UPDATE TOAST
+═══════════════════════════════════════════════ */
+.remote-update-toast {
+  position: fixed;
+  bottom: 1.75rem; left: 50%; transform: translateX(-50%);
+  z-index: 500;
+  display: flex; align-items: center; gap: .55rem;
+  padding: .7rem 1.5rem;
+  background: linear-gradient(135deg, #0A2E7A, #1253CC);
+  color: #fff;
+  font-family: var(--font-cond); font-size: .95rem; font-weight: 800; letter-spacing: .06em;
+  border-radius: 30px;
+  box-shadow: 0 8px 28px rgba(18,83,204,.55);
+  animation: siIn .35s var(--ease-spring);
+  white-space: nowrap;
+}
+.remote-update-toast.hidden { display: none; }
